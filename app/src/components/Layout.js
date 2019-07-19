@@ -41,8 +41,10 @@ const useStyles = makeStyles(theme => ({
   footer: {
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(6),
-  },
+  }
 }));
+
+
 
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -69,7 +71,7 @@ export default function Layout() {
             <div className={classes.heroButtons}>
               <Grid container spacing={2} justify="center">
                 <Grid item>
-                  <Button variant="contained" color="primary">
+                  <Button variant="contained" color="secondary">
                     Join Us!
                   </Button>
                 </Grid>
@@ -97,7 +99,7 @@ export default function Layout() {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button size="small" color="primary">
+                    <Button className={ classes.palette } size="small" color="primary">
                       View
                     </Button>
                   </CardActions>
