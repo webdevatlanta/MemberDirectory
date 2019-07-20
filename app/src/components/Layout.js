@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -11,6 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import BottomAppBar from './BottomAppBar';
 import WebDevAtlantaLogo from '../assets/images/WDA-logo.png'
+import ProfileAPI from '../api/ProfileAPI';
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -46,10 +47,19 @@ const useStyles = makeStyles(theme => ({
 
 
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
 export default function Layout() {
   const classes = useStyles();
+
+  const [data, setData] = useState({ cards: [] });
+
+  useEffect(() => {
+    async function fetchData() {
+      const cards = await ProfileAPI.fetchAll();
+      console.log(cards);
+      setData({cards});
+    }
+    fetchData();
+  }, []);
 
   return (
     <React.Fragment>
@@ -82,26 +92,28 @@ export default function Layout() {
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            {cards.map(card => (
+            {data.cards.map(card => (
               <Grid item key={card} xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
-                    image=""
+                    image={card.avatar_url}
                     title="Member"
                   />
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">
-                      This could be you!
+                      {card.name}
                     </Typography>
                     <Typography>
-                      Join WebDevAtlanta today.
+                      {card.gist_content}
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button className={ classes.palette } size="small" color="primary">
-                      View
-                    </Button>
+                    <a href={ card.github_url }>
+                      <Button className={ classes.palette } size="small" color="primary" >
+                        View
+                      </Button>
+                    </a>
                   </CardActions>
                 </Card>
               </Grid>

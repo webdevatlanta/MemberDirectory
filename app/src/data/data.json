@@ -1,0 +1,14 @@
+{
+  "members": [
+    {
+      "name":"abrie",
+      "github_username":"abrie",
+      "gist_id":"418d0d9e4d3158ebca2cc37dbe1696ee"
+    },
+    {
+      "name":"test_of_failure",
+      "github_username":"test_of_failure",
+      "gist_id":"this_gist_id_does_not_exist"
+    }
+  ]
+}
