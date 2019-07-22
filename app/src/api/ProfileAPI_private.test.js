@@ -58,6 +58,16 @@ it('cleanly handles rejected gist fetch', () => {
   return api.assignGistContent(m_in).then( m_out => {
 		expect(fetch.mock.calls.length).toEqual(1);
 		expect(fetch.mock.calls[0][0]).toEqual(m_out.gist_url);
-		expect(m_out.gist_content).toEqual("(fetch err)");
+		expect(m_out.gist_content).toEqual("(unreachable)");
+  });
+});
+
+it('fetches memberlist', () => {
+  fetch.resetMocks();
+  fetch.mockResponseOnce(JSON.stringify(TEST_MEMBERLIST));
+
+  return api.fetchMemberList().then( (response) => {
+		expect(fetch.mock.calls.length).toEqual(1);
+		expect(response.members.length).toEqual(2);
   });
 });
