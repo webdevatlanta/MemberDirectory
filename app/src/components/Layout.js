@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -11,7 +11,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import BottomAppBar from './BottomAppBar';
 import WebDevAtlantaLogo from '../assets/images/WDA-logo.png'
-import ProfileAPI from '../api/ProfileAPI';
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -47,19 +46,8 @@ const useStyles = makeStyles(theme => ({
 
 
 
-export default function Layout() {
+export default function Layout(props) {
   const classes = useStyles();
-
-  const [data, setData] = useState({ cards: [] });
-
-  useEffect(() => {
-    async function fetchData() {
-      const cards = await ProfileAPI.fetchAll();
-      console.log(cards);
-      setData({cards});
-    }
-    fetchData();
-  }, []);
 
   return (
     <React.Fragment>
@@ -92,7 +80,7 @@ export default function Layout() {
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            {data.cards.map(card => (
+            {props.data.cards.map(card => (
               <Grid item key={card} xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
                   <CardMedia
