@@ -1,44 +1,37 @@
 import * as api from './ProfileAPI_private.js'
 import TestConfig from "../config.test.json"
 
-it('assigns a valid profile gist url', () => {
-  const m = {
-    github_username: "foo",
-    gist_id: "bar",
-  }
+const TestMember = {
+  "name":"foo",
+  "github_username":"bar",
+  "gist_id":"abc123"
+}
 
-  const url = "https://gist.githubusercontent.com/foo/bar/raw"
-  expect(api.assignGistUrl(m).gist_url).toEqual(url);
+Object.freeze(TestMember);
+
+it('assigns a valid profile gist url', () => {
+  const expected = "https://gist.githubusercontent.com/bar/abc123/raw"
+  expect(api.assignGistUrl(TestMember).gist_url).toEqual(expected);
 });
 
 it('assigns a valid github profile url', () => {
-  const m = {
-    github_username: "foo",
-  }
-
-  const url = "https://github.com/foo"
-  expect(api.assignGithubUrl(m).github_url).toEqual(url);
+  const expected = "https://github.com/bar"
+  expect(api.assignGithubUrl(TestMember).github_url).toEqual(expected);
 });
 
 it('assigns a valid avatar url', () => {
-  const m = {
-    github_username: "foo",
-  }
-  const url = "https://github.com/foo.png?size=140"
-  expect(api.assignAvatarUrl(m).avatar_url).toEqual(url);
+  const expected = "https://github.com/bar.png?size=140"
+  expect(api.assignAvatarUrl(TestMember).avatar_url).toEqual(expected);
 });
 
 it('fetches content from gist url', () => {
-	const expected = "this is mocked gist content";
-
-  const m_in = {
-    gist_url: "https://foo/bar/raw"
-  }
+  const m = api.assignGistUrl(TestMember)
+	const expected = "gist content";
 
   fetch.resetMocks();
   fetch.mockResponseOnce(expected);
 
-  return api.assignGistContent(m_in).then( m_out => {
+  return api.assignGistContent(m).then( m_out => {
 		expect(fetch.mock.calls.length).toEqual(1);
 		expect(fetch.mock.calls[0][0]).toEqual(m_out.gist_url);
 		expect(m_out.gist_content).toEqual(expected);
@@ -47,16 +40,12 @@ it('fetches content from gist url', () => {
 });
 
 it('cleanly handles rejected gist fetch', () => {
-	const expected = "this is fetch should have failed ";
-
-  const m_in = {
-    gist_url: "https://foo/bar/raw"
-  }
+  const m = api.assignGistUrl(TestMember)
 
   fetch.resetMocks();
   fetch.mockReject(new Error('fake error message'))
 
-  return api.assignGistContent(m_in).then( m_out => {
+  return api.assignGistContent(m).then( m_out => {
 		expect(fetch.mock.calls.length).toEqual(1);
 		expect(fetch.mock.calls[0][0]).toEqual(m_out.gist_url);
 		expect(m_out.gist_content).toEqual("(unreachable)");
@@ -67,7 +56,7 @@ it('fetches memberlist', () => {
   fetch.resetMocks();
   fetch.mockResponseOnce(JSON.stringify(TEST_MEMBERLIST));
 
-  return api.fetchMemberList(TestConfig.memberlist).then( (response) => {
+  return api.fetchMemberList(TestConfig).then( (response) => {
 		expect(fetch.mock.calls.length).toEqual(1);
 		expect(response.members.length).toEqual(TEST_MEMBERLIST.members.length);
   });
