@@ -6,8 +6,9 @@ import { act } from 'react-dom/test-utils';
 it('renders without crashing', () => {
   fetch.resetMocks();
 
-  /* Very hacky solution here; to ensure all the fetch mocks complete before
-   * the compount unmounts. */
+  /* Very hacky solution here; using a timeout to ensure all
+   * the fetch mocks complete before the component unmounts. */
+
   let resolveMemberList;
   fetch.mockResponses(
     [ () => new Promise( resolve => { resolveMemberList = resolve } )],
@@ -16,6 +17,7 @@ it('renders without crashing', () => {
   );
 
   const div = document.createElement('div');
+
   act( () => {
     ReactDOM.render(<App />, div);
   });
