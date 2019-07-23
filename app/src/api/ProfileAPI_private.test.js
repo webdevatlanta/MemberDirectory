@@ -1,4 +1,5 @@
 import * as api from './ProfileAPI_private.js'
+import TestConfig from "../config.test.json"
 
 it('assigns a valid profile gist url', () => {
   const m = {
@@ -66,8 +67,8 @@ it('fetches memberlist', () => {
   fetch.resetMocks();
   fetch.mockResponseOnce(JSON.stringify(TEST_MEMBERLIST));
 
-  return api.fetchMemberList().then( (response) => {
+  return api.fetchMemberList(TestConfig.memberlist).then( (response) => {
 		expect(fetch.mock.calls.length).toEqual(1);
-		expect(response.members.length).toEqual(2);
+		expect(response.members.length).toEqual(TEST_MEMBERLIST.members.length);
   });
 });

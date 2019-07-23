@@ -1,10 +1,9 @@
-//import data from '../data/data.json';
 import * as api from './ProfileAPI_private.js';
 
 export default {
-  async fetchAll() {
-    const data = await api.fetchMemberList();
-    const members = data.members
+  async fetchAll(config) {
+    const fetched = await api.fetchMemberList(config);
+    const members = fetched.members
       .map( api.assignGistUrl )
       .map( api.assignAvatarUrl )
       .map( api.assignGithubUrl );
@@ -12,4 +11,3 @@ export default {
     return Promise.all( members.map( api.assignGistContent ) );
   }
 }
-

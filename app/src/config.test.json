@@ -1,0 +1,7 @@
+{
+  "memberlist": {
+    "gist_server":"https://mock-gist-memberlist-server",
+    "gist_user":"mock-gist-memberlist-user",
+    "gist_id":"mock-gist-memberlist-id"
+  }
+}

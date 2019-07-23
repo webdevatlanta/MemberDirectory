@@ -16,15 +16,15 @@ const theme = createMuiTheme({
   }
 });
 
-function App() {
+function App(props) {
   const [data, setData] = useState({ cards: [] });
 
   useEffect(() => {
-    async function fetchData() {
-      const cards = await ProfileAPI.fetchAll().catch(()=>{});
+    async function fetchData(config) {
+      const cards = await ProfileAPI.fetchAll(config).catch(()=>{});
       setData({cards});
     }
-    fetchData();
+    fetchData(props.config.memberlist);
   }, []);
 
   return (

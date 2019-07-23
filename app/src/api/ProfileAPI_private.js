@@ -1,7 +1,7 @@
-export function fetchMemberList() {
-  const gist_server = "https://gist.githubusercontent.com";
-  const gist_user = "abrie";
-  const gist_id = "f33af17591e8ab04458cd76b3764f222";
+export function fetchMemberList(config) {
+  const gist_server = config.gist_server;
+  const gist_user = config.gist_user;
+  const gist_id = config.gist_id;
   const gist_url = `${gist_server}/${gist_user}/${gist_id}/raw/memberlist.js`;
 
   const checkResponse = (response) => {
