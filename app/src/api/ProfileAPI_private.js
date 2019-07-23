@@ -4,19 +4,12 @@ export function fetchMemberList(config) {
   const gist_id = config.gist_id;
   const gist_url = `${gist_server}/${gist_user}/${gist_id}/raw/memberlist.js`;
 
-  const checkResponse = (response) => {
-    if (response.ok) return response;
-    else throw new Error("Reponse errror");
-  }
-
   return new Promise( (resolve, reject) => {
     fetch(gist_url)
       .then( (response) => checkResponse(response) )
       .then( (response) => response.json() )
       .then( (json) => resolve(json) )
-      .catch( (err) => {
-        resolve({error:err});
-      })
+      .catch( (err) => resolve({error:err}) )
   });
 }
 
@@ -45,23 +38,18 @@ export function assignAvatarUrl(m) {
 export function assignGistContent(m) {
   return new Promise( (resolve, reject) => {
     fetch(m.gist_url)
-      .then( (response) => {
-        if (response.ok) return response.text()
-        else throw new Error("Reponse errror");
-      })
-      .then( (gist_content) => {
-        resolve({
-          ...m,
-          gist_content
-        })
-      })
-      .catch( (err) => {
-        resolve({
-          ...m,
-          github_url: "",
-          avatar_url: "",
-          gist_content: "(unreachable)"
-        })
-      })
+      .then( (response) => checkResponse(response) )
+      .then( (response) => response.text() )
+      .then( (gist_content) => resolve({ ...m, gist_content }) )
+      .catch( (error) => resolve({ ...m, error }) )
   })
 }
+
+function checkResponse(response) {
+  if (response.ok) {
+    return response;
+  } else {
+    throw new Error(`${response.status}:${response.statusText}`);
+  }
+}
+

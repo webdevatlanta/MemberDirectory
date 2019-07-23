@@ -39,16 +39,17 @@ it('fetches content from gist url', () => {
 
 });
 
-it('cleanly handles rejected gist fetch', () => {
+it('returns error for failed gist fetch', () => {
   const m = api.assignGistUrl(TestMember)
+  const expected = new Error("An error, how... expected!")
 
   fetch.resetMocks();
-  fetch.mockReject(new Error('fake error message'))
+  fetch.mockReject(expected)
 
   return api.assignGistContent(m).then( m_out => {
 		expect(fetch.mock.calls.length).toEqual(1);
 		expect(fetch.mock.calls[0][0]).toEqual(m_out.gist_url);
-		expect(m_out.gist_content).toEqual("(unreachable)");
+		expect(m_out.error).toEqual(expected);
   });
 });
 
