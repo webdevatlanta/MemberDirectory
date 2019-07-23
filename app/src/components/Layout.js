@@ -76,11 +76,13 @@ export default function Layout(props) {
               </Grid>
             </div>
           </Container>
-        </div>
+        </div> {/* End hero unit */}
+
         <Container className={classes.cardGrid} maxWidth="md">
-          {/* End hero unit */}
+
+          {/* Valid cards are show here */}
           <Grid container spacing={4}>
-            {props.data.cards.map(card => (
+            {props.data.cards.filter(card => !card.error).map(card => (
               <Grid item key={card.name} xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
                   <CardMedia
@@ -103,6 +105,24 @@ export default function Layout(props) {
                       </Button>
                     </a>
                   </CardActions>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+
+          {/* Cards with errors are shown here */}
+          <Grid container spacing={4}>
+            {props.data.cards.filter(card => !(!card.error)).map(card => (
+              <Grid item key={card.name} xs={12} sm={6} md={4}>
+                <Card className={classes.card}>
+                  <CardContent className={classes.cardContent}>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {card.name}
+                    </Typography>
+                    <Typography>
+                      <a href={card.gist_url}>{card.error.message}</a>
+                    </Typography>
+                  </CardContent>
                 </Card>
               </Grid>
             ))}
