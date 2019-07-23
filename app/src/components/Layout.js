@@ -81,7 +81,7 @@ export default function Layout(props) {
           {/* End hero unit */}
           <Grid container spacing={4}>
             {props.data.cards.map(card => (
-              <Grid item key={card} xs={12} sm={6} md={4}>
+              <Grid item key={card.name} xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
