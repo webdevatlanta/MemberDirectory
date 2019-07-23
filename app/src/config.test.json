@@ -1,7 +1,7 @@
 {
-  "memberlist": {
-    "gist_server":"https://mock-gist-memberlist-server",
-    "gist_user":"mock-gist-memberlist-user",
-    "gist_id":"mock-gist-memberlist-id"
+  "member_masterlist": {
+    "gist_server":"https://mock-gist-member_masterlist-server",
+    "gist_user":"mock-gist-member_masterlist-user",
+    "gist_id":"mock-gist-member_masterlist-id"
   }
 }

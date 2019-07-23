@@ -24,8 +24,8 @@ function App(props) {
       const cards = await ProfileAPI.fetchAll(config).catch(()=>{});
       setData({cards});
     }
-    fetchData(props.config.memberlist);
-  }, [props.config.memberlist]);
+    fetchData(props.config);
+  }, [props.config]);
 
   return (
     <div className="App">

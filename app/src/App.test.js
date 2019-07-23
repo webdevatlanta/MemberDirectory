@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import { act } from 'react-dom/test-utils';
-import TestConfig from './config.test.json';
+import Config from './config.test.json';
 
 it('renders without crashing', () => {
   fetch.resetMocks();
@@ -20,8 +20,7 @@ it('renders without crashing', () => {
   const div = document.createElement('div');
 
   act( () => {
-    console.log(TestConfig);
-    ReactDOM.render(<App config={TestConfig} />, div);
+    ReactDOM.render(<App config={Config} />, div);
   });
 
   act( () => {
