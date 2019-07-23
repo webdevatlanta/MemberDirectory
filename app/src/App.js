@@ -25,7 +25,7 @@ function App(props) {
       setData({cards});
     }
     fetchData(props.config.memberlist);
-  }, []);
+  }, [props.config.memberlist]);
 
   return (
     <div className="App">
