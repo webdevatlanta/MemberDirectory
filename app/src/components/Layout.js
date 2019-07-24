@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import BottomAppBar from './BottomAppBar';
-import WebDevAtlantaLogo from '../assets/images/WDA-logo.png'
+import WebDevAtlantaLogo from '../assets/images/WDA-logo.png';
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -87,7 +87,7 @@ export default function Layout() {
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
-                    image=""
+                    image="/images/placeholder.jpg"
                     title="Member"
                   />
                   <CardContent className={classes.cardContent}>
