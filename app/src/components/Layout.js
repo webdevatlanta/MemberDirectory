@@ -87,7 +87,7 @@ export default function Layout(props) {
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
-                    image={card.avatar_url}
+                    image={card.profile.avatar}
                     title="Member"
                   />
                   <CardContent className={classes.cardContent}>
@@ -95,7 +95,7 @@ export default function Layout(props) {
                       {card.name}
                     </Typography>
                     <Typography>
-                      {card.gist_content}
+                      {card.profile.status}
                     </Typography>
                   </CardContent>
                   <CardActions>
