@@ -6,15 +6,18 @@ const TestMember = {
   github_username: 'bar',
   gist_id: 'abc123',
 };
-
 Object.freeze(TestMember);
 
 const TestMember_JSONProfile = {
   "avatar": "https://url/to/avatar",
-  "text": "Hi, this is a json profile."
+  "status": "Hi, this is a json profile."
 }
-
 Object.freeze(TestMember_JSONProfile);
+
+const TestMember_JSONProfile_NoAvatar = {
+  "status": "Hi, this is a json profile."
+}
+Object.freeze(TestMember_JSONProfile_NoAvatar);
 
 const TestMember_TextProfile = "Hi, this is a text profile."
 
@@ -28,24 +31,53 @@ it('assigns a valid github profile url', () => {
   expect(api.assignGithubUrl(TestMember).github_url).toEqual(expected);
 });
 
-it('assigns a valid avatar url', () => {
-  const expected = 'https://github.com/bar.png?size=140';
-  expect(api.assignAvatarUrl(TestMember).avatar_url).toEqual(expected);
-});
-
-it('fetches content as text from text gist url', () => {
+it('profile assignment does 1 fetch from gist_url', () => {
   fetch.resetMocks();
   fetch.mockResponseOnce(TestMember_TextProfile);
 
   const input = api.assignGistUrl(TestMember);
-  return api.assignGistContent(input).then(output => {
+  return api.assignProfile(input).then(output => {
     expect(fetch.mock.calls.length).toEqual(1);
     expect(fetch.mock.calls[0][0]).toEqual(output.gist_url);
-    expect(output.gist_content.status).toEqual(TestMember_TextProfile);
-  });
+  })
 });
 
-it('extracts json from response if json', () => {
+it('fetches profile as text and assigns default avatar', () => {
+  fetch.resetMocks();
+  fetch.mockResponseOnce(TestMember_TextProfile);
+
+  const avatar = `https://github.com/${TestMember.github_username}.png?size=140`
+  const input = api.assignGistUrl(TestMember);
+  return api.assignProfile(input).then(output => {
+    expect(output.profile.status).toEqual(TestMember_TextProfile);
+    expect(output.profile.avatar).toEqual(avatar);
+  })
+});
+
+it('fetches profile as json and assigns default avatar', () => {
+  fetch.resetMocks();
+  fetch.mockResponseOnce(JSON.stringify(TestMember_JSONProfile_NoAvatar));
+
+  const avatar = `https://github.com/${TestMember.github_username}.png?size=140`
+  const input = api.assignGistUrl(TestMember);
+  return api.assignProfile(input).then(output => {
+    expect(output.profile.status).toEqual(TestMember_JSONProfile.status);
+    expect(output.profile.avatar).toEqual(avatar);
+  })
+});
+
+it('fetches profile as json with avatar specified', () => {
+  fetch.resetMocks();
+  fetch.mockResponseOnce(JSON.stringify(TestMember_JSONProfile));
+
+  const input = api.assignGistUrl(TestMember);
+  return api.assignProfile(input).then(output => {
+    expect(output.profile.status).toEqual(TestMember_JSONProfile.status);
+    expect(output.profile.avatar).toEqual(TestMember_JSONProfile.avatar);
+  })
+});
+
+it('builds profile using json gist', () => {
   fetch.resetMocks();
 
   const JSONString = JSON.stringify(TestMember_JSONProfile);
@@ -53,21 +85,19 @@ it('extracts json from response if json', () => {
 
   return fetch("mocked-fetch-here")
     .then( (response) => api.extract(response) )
-    .then( (result) => {
-      expect(result.json).toEqual(TestMember_JSONProfile);
-      expect(result.text).toEqual(JSONString)
+    .then( (profile) => {
+      expect(profile).toEqual(TestMember_JSONProfile);
     });
 });
 
-it('extracts text from response if not json', () => {
+it('builds profile using text gist', () => {
   fetch.resetMocks();
   fetch.mockResponseOnce(TestMember_TextProfile);
 
   return fetch("mocked-fetch-here")
     .then( (response) => api.extract(response) )
-    .then( (result) => {
-      expect(result.json).toEqual(undefined);
-      expect(result.text).toEqual(TestMember_TextProfile);
+    .then( (profile) => {
+      expect(profile.status).toEqual(TestMember_TextProfile);
     });
 });
 
@@ -78,9 +108,7 @@ it('returns error for failed gist fetch', () => {
   fetch.resetMocks();
   fetch.mockReject(expected);
 
-  return api.assignGistContent(m).then(m_out => {
-    expect(fetch.mock.calls.length).toEqual(1);
-    expect(fetch.mock.calls[0][0]).toEqual(m_out.gist_url);
+  return api.assignProfile(m).then(m_out => {
     expect(m_out.error).toEqual(expected);
   });
 });
