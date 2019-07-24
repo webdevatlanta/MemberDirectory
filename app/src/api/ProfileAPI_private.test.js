@@ -41,7 +41,7 @@ it('fetches content as text from text gist url', () => {
   return api.assignGistContent(input).then(output => {
     expect(fetch.mock.calls.length).toEqual(1);
     expect(fetch.mock.calls[0][0]).toEqual(output.gist_url);
-    expect(output.gist_content.text).toEqual(TestMember_TextProfile);
+    expect(output.gist_content.status).toEqual(TestMember_TextProfile);
   });
 });
 

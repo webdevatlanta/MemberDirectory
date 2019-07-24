@@ -60,6 +60,19 @@ export function assignGistContent(m) {
     fetch(m.gist_url)
       .then( (response) => checkResponse(response) )
       .then( (response) => extract(response) )
+      .then( (content) => {
+        if (content.json) {
+          return {
+            avatar: content.json.avatar,
+            status: content.json.status,
+          }
+        } else {
+          return {
+            avatar: `https://github.com/${m.github_username}.png?size=140`,
+            status: content.text,
+          }
+        }
+      })
       .then( (gist_content) => resolve({ ...m, gist_content }) )
       .catch( (error) => resolve({ ...m, error }) )
   })
