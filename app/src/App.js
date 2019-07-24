@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import Layout from './components/Layout';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
+import ProfileAPI from './api/ProfileAPI';
 
 const theme = createMuiTheme({
   palette: {
@@ -15,11 +16,21 @@ const theme = createMuiTheme({
   }
 });
 
-function App() {
+function App(props) {
+  const [data, setData] = useState({ cards: [] });
+
+  useEffect(() => {
+    async function fetchData(config) {
+      const cards = await ProfileAPI.fetchAll(config).catch(()=>{});
+      setData({cards});
+    }
+    fetchData(props.config);
+  }, [props.config]);
+
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
-        <Layout></Layout>
+        <Layout data={data}></Layout>
       </ThemeProvider>
     </div>
   );

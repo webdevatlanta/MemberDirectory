@@ -46,9 +46,7 @@ const useStyles = makeStyles(theme => ({
 
 
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-export default function Layout() {
+export default function Layout(props) {
   const classes = useStyles();
 
   return (
@@ -78,31 +76,53 @@ export default function Layout() {
               </Grid>
             </div>
           </Container>
-        </div>
+        </div> {/* End hero unit */}
+
         <Container className={classes.cardGrid} maxWidth="md">
-          {/* End hero unit */}
+
+          {/* Valid cards are show here */}
           <Grid container spacing={4}>
-            {cards.map(card => (
-              <Grid item key={card} xs={12} sm={6} md={4}>
+            {props.data.cards.filter(card => !card.error).map(card => (
+              <Grid item key={card.name} xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
-                    image=""
+                    image={card.profile.avatar}
                     title="Member"
                   />
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">
-                      This could be you!
+                      {card.name}
                     </Typography>
                     <Typography>
-                      Join WebDevAtlanta today.
+                      {card.profile.status}
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button className={ classes.palette } size="small" color="primary">
-                      View
-                    </Button>
+                    <a href={ card.github_url }>
+                      <Button className={ classes.palette } size="small" color="primary" >
+                        View
+                      </Button>
+                    </a>
                   </CardActions>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+
+          {/* Cards with errors are shown here */}
+          <Grid container spacing={4}>
+            {props.data.cards.filter(card => !(!card.error)).map(card => (
+              <Grid item key={card.name} xs={12} sm={6} md={4}>
+                <Card className={classes.card}>
+                  <CardContent className={classes.cardContent}>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {card.name}
+                    </Typography>
+                    <Typography>
+                      <a href={card.gist_url}>{card.error.message}</a>
+                    </Typography>
+                  </CardContent>
                 </Card>
               </Grid>
             ))}
