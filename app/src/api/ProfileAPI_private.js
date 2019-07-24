@@ -35,11 +35,31 @@ export function assignAvatarUrl(m) {
   }
 }
 
+export async function extract(response) {
+  function extractText() {
+    return new Promise( (resolve, reject) =>
+      response.clone().text()
+        .then( text => resolve({text}) )
+        .catch( error => resolve({error}) ));
+  }
+
+  function extractJSON() {
+    return new Promise( (resolve, reject) =>
+      response.clone().json()
+        .then( json => resolve({json}) )
+        .catch( error => resolve({json:undefined}) ));
+  }
+
+  const {text, error} = await extractText();
+  const {json} = await extractJSON();
+  return {text, json, error}
+}
+
 export function assignGistContent(m) {
   return new Promise( (resolve, reject) => {
     fetch(m.gist_url)
       .then( (response) => checkResponse(response) )
-      .then( (response) => response.text() )
+      .then( (response) => extract(response) )
       .then( (gist_content) => resolve({ ...m, gist_content }) )
       .catch( (error) => resolve({ ...m, error }) )
   })
