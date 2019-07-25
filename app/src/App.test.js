@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import { act } from 'react-dom/test-utils';
+import {act} from 'react-dom/test-utils';
 import Config from './config.test.json';
 
 it('renders without crashing', () => {
@@ -12,19 +12,29 @@ it('renders without crashing', () => {
 
   let resolveMemberList;
   fetch.mockResponses(
-    [ () => new Promise( resolve => { resolveMemberList = resolve } )],
-    [ TEST_MEMBER_1 ],
-    [ () => new Promise( resolve => setTimeout(() => resolve({body:TEST_MEMBER_2}), 0)) ],
+    [
+      () =>
+        new Promise(resolve => {
+          resolveMemberList = resolve;
+        }),
+    ],
+    [TEST_MEMBER_1],
+    [
+      () =>
+        new Promise(resolve =>
+          setTimeout(() => resolve({body: TEST_MEMBER_2}), 0),
+        ),
+    ],
   );
 
   const div = document.createElement('div');
 
-  act( () => {
+  act(() => {
     ReactDOM.render(<App config={Config} />, div);
   });
 
-  act( () => {
-    resolveMemberList({body:JSON.stringify(TEST_MEMBERLIST)});
+  act(() => {
+    resolveMemberList({body: JSON.stringify(TEST_MEMBERLIST)});
   });
 
   ReactDOM.unmountComponentAtNode(div);

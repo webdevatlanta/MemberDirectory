@@ -34,8 +34,8 @@ export function assignAvatar(member, profile) {
   } else {
     return {
       ...profile,
-      avatar: `https://github.com/${member.github_username}.png?size=140`
-    }
+      avatar: `https://github.com/${member.github_username}.png?size=140`,
+    };
   }
 }
 
@@ -77,21 +77,21 @@ export async function extract(response) {
     return {
       avatar: json.avatar,
       status: json.status,
-    }
+    };
   }
 
   const {text, error} = await extractText();
 
-  if(!error) {
+  if (!error) {
     return {
       avatar: undefined,
       status: text,
-    }
+    };
   } else {
     return {
       avatar: undefined,
-      status: error
-    }
+      status: error,
+    };
   }
 }
 

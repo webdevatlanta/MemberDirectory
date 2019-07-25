@@ -9,17 +9,17 @@ const TestMember = {
 Object.freeze(TestMember);
 
 const TestMember_JSONProfile = {
-  "avatar": "https://url/to/avatar",
-  "status": "Hi, this is a json profile."
-}
+  avatar: 'https://url/to/avatar',
+  status: 'Hi, this is a json profile.',
+};
 Object.freeze(TestMember_JSONProfile);
 
 const TestMember_JSONProfile_NoAvatar = {
-  "status": "Hi, this is a json profile."
-}
+  status: 'Hi, this is a json profile.',
+};
 Object.freeze(TestMember_JSONProfile_NoAvatar);
 
-const TestMember_TextProfile = "Hi, this is a text profile."
+const TestMember_TextProfile = 'Hi, this is a text profile.';
 
 it('assigns a valid profile gist url', () => {
   const expected = 'https://gist.githubusercontent.com/bar/abc123/raw';
@@ -39,31 +39,35 @@ it('profile assignment does 1 fetch from gist_url', () => {
   return api.assignProfile(input).then(output => {
     expect(fetch.mock.calls.length).toEqual(1);
     expect(fetch.mock.calls[0][0]).toEqual(output.gist_url);
-  })
+  });
 });
 
 it('fetches profile as text and assigns default avatar', () => {
   fetch.resetMocks();
   fetch.mockResponseOnce(TestMember_TextProfile);
 
-  const avatar = `https://github.com/${TestMember.github_username}.png?size=140`
+  const avatar = `https://github.com/${
+    TestMember.github_username
+  }.png?size=140`;
   const input = api.assignGistUrl(TestMember);
   return api.assignProfile(input).then(output => {
     expect(output.profile.status).toEqual(TestMember_TextProfile);
     expect(output.profile.avatar).toEqual(avatar);
-  })
+  });
 });
 
 it('fetches profile as json and assigns default avatar', () => {
   fetch.resetMocks();
   fetch.mockResponseOnce(JSON.stringify(TestMember_JSONProfile_NoAvatar));
 
-  const avatar = `https://github.com/${TestMember.github_username}.png?size=140`
+  const avatar = `https://github.com/${
+    TestMember.github_username
+  }.png?size=140`;
   const input = api.assignGistUrl(TestMember);
   return api.assignProfile(input).then(output => {
     expect(output.profile.status).toEqual(TestMember_JSONProfile.status);
     expect(output.profile.avatar).toEqual(avatar);
-  })
+  });
 });
 
 it('fetches profile as json with avatar specified', () => {
@@ -74,7 +78,7 @@ it('fetches profile as json with avatar specified', () => {
   return api.assignProfile(input).then(output => {
     expect(output.profile.status).toEqual(TestMember_JSONProfile.status);
     expect(output.profile.avatar).toEqual(TestMember_JSONProfile.avatar);
-  })
+  });
 });
 
 it('builds profile using json gist', () => {
@@ -83,9 +87,9 @@ it('builds profile using json gist', () => {
   const JSONString = JSON.stringify(TestMember_JSONProfile);
   fetch.mockResponseOnce(JSONString);
 
-  return fetch("mocked-fetch-here")
-    .then( (response) => api.extract(response) )
-    .then( (profile) => {
+  return fetch('mocked-fetch-here')
+    .then(response => api.extract(response))
+    .then(profile => {
       expect(profile).toEqual(TestMember_JSONProfile);
     });
 });
@@ -94,9 +98,9 @@ it('builds profile using text gist', () => {
   fetch.resetMocks();
   fetch.mockResponseOnce(TestMember_TextProfile);
 
-  return fetch("mocked-fetch-here")
-    .then( (response) => api.extract(response) )
-    .then( (profile) => {
+  return fetch('mocked-fetch-here')
+    .then(response => api.extract(response))
+    .then(profile => {
       expect(profile.status).toEqual(TestMember_TextProfile);
     });
 });
