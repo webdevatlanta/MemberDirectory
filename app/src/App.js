@@ -3,7 +3,7 @@ import './App.css';
 import Layout from './components/Layout';
 import {createMuiTheme} from '@material-ui/core/styles';
 import {ThemeProvider} from '@material-ui/styles';
-import ProfileAPI from './api/ProfileAPI';
+import CardAPI from './api/CardAPI';
 
 const theme = createMuiTheme({
   palette: {
@@ -20,11 +20,15 @@ function App(props) {
   const [data, setData] = useState({cards: []});
 
   useEffect(() => {
-    async function fetchData(config) {
-      const cards = await ProfileAPI.fetchAll(config).catch(() => {});
-      setData({cards});
+    async function buildCards(config) {
+      const {member_masterlist} = config;
+      await CardAPI.buildCards(member_masterlist)
+        .then(cards => setData({cards}))
+        .catch((error) => {
+          console.error(error)
+        });
     }
-    fetchData(props.config);
+    buildCards(props.config);
   }, [props.config]);
 
   return (

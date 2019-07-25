@@ -2,7 +2,7 @@
 // and https://github.com/jefflau/jest-fetch-mock#using-with-create-react-app
 global.fetch = require('jest-fetch-mock');
 
-global.TEST_MEMBERLIST = {
+global.TEST_DIRECTORY = {
   members: [
     {
       name: 'foo',

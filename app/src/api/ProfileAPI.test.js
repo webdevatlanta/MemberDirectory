@@ -1,4 +1,4 @@
-import * as api from './ProfileAPI_private.js';
+import * as api from './ProfileAPI.js';
 import TestConfig from '../config.test.json';
 
 const TestMember = {
@@ -48,7 +48,7 @@ it('fetches profile as text and assigns default avatar', () => {
 
   const avatar = `https://github.com/${
     TestMember.github_username
-  }.png?size=140`;
+  }.png?size=460`;
   const input = api.assignGistUrl(TestMember);
   return api.assignProfile(input).then(output => {
     expect(output.profile.status).toEqual(TestMember_TextProfile);
@@ -60,9 +60,7 @@ it('fetches profile as json and assigns default avatar', () => {
   fetch.resetMocks();
   fetch.mockResponseOnce(JSON.stringify(TestMember_JSONProfile_NoAvatar));
 
-  const avatar = `https://github.com/${
-    TestMember.github_username
-  }.png?size=140`;
+  const avatar = `https://github.com/${TestMember.github_username}.png?size=460`;
   const input = api.assignGistUrl(TestMember);
   return api.assignProfile(input).then(output => {
     expect(output.profile.status).toEqual(TestMember_JSONProfile.status);
@@ -119,10 +117,31 @@ it('returns error for failed gist fetch', () => {
 
 it('fetches memberlist', () => {
   fetch.resetMocks();
-  fetch.mockResponseOnce(JSON.stringify(TEST_MEMBERLIST));
+  fetch.mockResponseOnce(JSON.stringify(TEST_DIRECTORY));
 
-  return api.fetchMemberList(TestConfig).then(response => {
+  return api.fetchDirectory(TestConfig).then(directory => {
     expect(fetch.mock.calls.length).toEqual(1);
-    expect(response.members.length).toEqual(TEST_MEMBERLIST.members.length);
+    expect(directory.members.length).toEqual(TEST_DIRECTORY.members.length);
+  });
+});
+
+it('returns error if memberlist fetch fails', () => {
+  const expectedError = "member directory is invalid json";
+  fetch.resetMocks();
+  fetch.mockReject(expectedError);
+
+  return api.fetchDirectory(TestConfig).then(response => {
+    expect(fetch.mock.calls.length).toEqual(1);
+    expect(response.error).toEqual(expectedError);
+  });
+});
+
+it('returns error for unparseable memberlist json', () => {
+  fetch.resetMocks();
+  fetch.mockResponseOnce(`{"this comma->","is bad."}`);
+
+  return api.fetchDirectory(TestConfig).then(response => {
+    expect(fetch.mock.calls.length).toEqual(1);
+    expect(response.error).toBeTruthy();
   });
 });
