@@ -120,7 +120,8 @@ class Layout extends Component {
     
               {/* Valid cards are show here */}
               <Grid container spacing={4}>
-                {this.props.data.cards.filter(card => !card.error).map((card, index) => (
+                {/* Return the cards in a random order */}
+                {this.props.data.cards.filter(card => !card.error).sort((a,b) => 0.5 - Math.random()).map((card, index) => (
                   <Grid item key={card.name} xs={12} sm={6} md={4}>
                     <Draggable
                       axis="both"
