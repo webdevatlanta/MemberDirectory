@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -49,6 +49,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function Layout(props) {
   const classes = useStyles();
+  const [showName, setShowHideName] = useState(false);
 
   return (
     <React.Fragment>
@@ -80,6 +81,19 @@ export default function Layout(props) {
         </div> {/* End hero unit */}
 
         <Container className={classes.cardGrid} maxWidth="md">
+        
+        <Grid 
+          item
+          style={{marginBottom: '10px'}}
+        >
+          <Button 
+            variant="contained" 
+            color="secondary"
+            onClick={() => {setShowHideName(!showName)}}
+          >
+            {showName ? "Hide Name" : "Show Name"}
+          </Button>
+        </Grid>
 
           {/* Valid cards are show here */}
           <Grid container spacing={4}>
@@ -101,7 +115,7 @@ export default function Layout(props) {
                     />
                     <CardContent className={classes.cardContent}>
                       <Typography gutterBottom variant="h5" component="h2">
-                        {card.name}
+                        {showName ? card.name : ''}
                       </Typography>
                       <Typography>
                         {card.profile.status}
