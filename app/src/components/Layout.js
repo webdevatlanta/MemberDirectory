@@ -16,10 +16,27 @@ import Draggable from 'react-draggable';
 class Layout extends Component {
   constructor(props) {
     super(props);
+    let namesArray = [];
+    for (let i = 0; i < props.data.cards.length; i++) {
+      namesArray.push({"name": undefined})
+    }
     this.state = {
       showName: true,
-      names: [{name: ""}]
+      names: namesArray
     };
+
+    this.onNameChange = this.onNameChange.bind(this);
+  }
+
+  /**
+   * Handles the name change input event.
+   * @param {Int} index The index of the array element for the name
+   * @param {*} e The event from the name change.
+   */
+  onNameChange(index, e) {
+    let namesArrayCopy = [...this.state.names];
+    namesArrayCopy[index] = e.target.value;
+    this.setState({names: namesArrayCopy})
   }
 
   render() {
@@ -94,6 +111,13 @@ class Layout extends Component {
                               : 
                                 <input
                                   type="text"
+                                  name={card.github_username.toUpperCase() + '-' + index}
+                                  data-id={index}
+                                  id={card.github_username.toUpperCase() + '-' + index}
+                                  value={this.state.names[index].name}
+                                  className="name"
+                                  onChange={(e) => this.onNameChange(index, e)}
+                                  onMouseDown={e => e.stopPropagation()}
                                 />
                             }
                           </Typography>
