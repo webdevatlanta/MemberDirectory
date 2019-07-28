@@ -22,7 +22,8 @@ class Layout extends Component {
     }
     this.state = {
       showName: true,
-      names: namesArray
+      names: namesArray,
+      score: 0
     };
 
     this.onNameChange = this.onNameChange.bind(this);
@@ -57,12 +58,14 @@ class Layout extends Component {
         The answer is ${answer}. 
         You got it right!
         `);
+        this.setState({score: this.state.score + 1})
       } else {
         alert(`
         Your guess was: ${guess}. 
         The answer is ${answer}. 
         Sorry you got it wrong!
         `);
+        this.setState({score: this.state.score - 1})
       }
     }
   }
@@ -99,6 +102,8 @@ class Layout extends Component {
             </div> {/* End hero unit */}
     
             <Container className={classes.cardGrid} maxWidth="md">
+
+            <h2>Score: {this.state.score}</h2>
             
             <Grid 
               item
