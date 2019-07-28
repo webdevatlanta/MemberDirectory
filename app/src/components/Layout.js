@@ -26,6 +26,7 @@ class Layout extends Component {
     };
 
     this.onNameChange = this.onNameChange.bind(this);
+    this.onNameKeyDown = this.onNameKeyDown.bind(this);
   }
 
   /**
@@ -37,6 +38,33 @@ class Layout extends Component {
     let namesArrayCopy = [...this.state.names];
     namesArrayCopy[index] = e.target.value;
     this.setState({names: namesArrayCopy})
+  }
+
+  /**
+   * Enter key event hanlder for name input/guess of name.
+   * @param {Int} index The index in the array of the name selected.
+   * @param {*} e The event from the enter key press.
+   */
+  onNameKeyDown(index, e) {
+    if (e.key === 'Enter') {
+      let answer = this.props.data.cards[index].name.toUpperCase().split(' ')[0];
+      let guess = e.target.value.toUpperCase().split(' ')[0];
+      let guessResult = answer === guess;
+
+      if (guessResult) {
+        alert(`
+        Your guess was: ${guess}. 
+        The answer is ${answer}. 
+        You got it right!
+        `);
+      } else {
+        alert(`
+        Your guess was: ${guess}. 
+        The answer is ${answer}. 
+        Sorry you got it wrong!
+        `);
+      }
+    }
   }
 
   render() {
@@ -118,6 +146,7 @@ class Layout extends Component {
                                   className="name"
                                   onChange={(e) => this.onNameChange(index, e)}
                                   onMouseDown={e => e.stopPropagation()}
+                                  onKeyDown={(e) => this.onNameKeyDown(index, e)}
                                 />
                             }
                           </Typography>
