@@ -11,7 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import BottomAppBar from './BottomAppBar';
 import WebDevAtlantaLogo from '../assets/images/WDA-logo.png';
-import Draggable, {DraggableCore} from 'react-draggable';
+import Draggable from 'react-draggable';
 
 const useStyles = makeStyles(theme => ({
   icon: {
