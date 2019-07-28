@@ -49,7 +49,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function Layout(props) {
   const classes = useStyles();
-  const [showName, setShowHideName] = useState(false);
+  const [showName, setShowHideName] = useState(true);
 
   return (
     <React.Fragment>
