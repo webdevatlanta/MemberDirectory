@@ -54,15 +54,15 @@ class Layout extends Component {
 
       if (guessResult) {
         alert(`
-        Your guess was: ${guess}. 
-        The answer is ${answer}. 
+        Your guess was: ${guess.charAt(0).toUpperCase() + answer.slice(1).toLowerCase()}. 
+        The answer is ${answer.charAt(0).toUpperCase() + answer.slice(1).toLowerCase()}. 
         You got it right!
         `);
         this.setState({score: this.state.score + 1})
       } else {
         alert(`
-        Your guess was: ${guess}. 
-        The answer is ${answer}. 
+        Your guess was: ${guess.charAt(0).toUpperCase() + answer.slice(1).toLowerCase()}. 
+        The answer is ${answer.charAt(0).toUpperCase() + answer.slice(1).toLowerCase()}. 
         Sorry you got it wrong!
         `);
         this.setState({score: this.state.score - 1})
