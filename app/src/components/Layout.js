@@ -17,7 +17,8 @@ class Layout extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showName: true
+      showName: true,
+      names: [{name: ""}]
     };
   }
 
@@ -69,7 +70,7 @@ class Layout extends Component {
     
               {/* Valid cards are show here */}
               <Grid container spacing={4}>
-                {this.props.data.cards.filter(card => !card.error).map(card => (
+                {this.props.data.cards.filter(card => !card.error).map((card, index) => (
                   <Grid item key={card.name} xs={12} sm={6} md={4}>
                     <Draggable
                       axis="both"
@@ -87,7 +88,14 @@ class Layout extends Component {
                         />
                         <CardContent className={classes.cardContent}>
                           <Typography gutterBottom variant="h5" component="h2">
-                            {this.state.showName ? card.name : <input/>}
+                            {
+                              this.state.showName ? 
+                                card.name
+                              : 
+                                <input
+                                  type="text"
+                                />
+                            }
                           </Typography>
                           <Typography>
                             {card.profile.status}
