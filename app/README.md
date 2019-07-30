@@ -1,3 +1,48 @@
+# WebDevATL Member Directory
+
+## What is it?
+A directory of [WebDevATL](https://www.meetup.com/WebDevAtlanta/) members.
+It runs [here](https://todo) (TODO: Deploy!)
+
+## How does it work?
+
+Members provide their profile as a GitHub
+[Gist](https://help.github.com/en/articles/creating-gists). The
+gist is used to build a profile card. The profile card shows the member's name, an
+avatar, and a small plaintext blurb.
+
+## How to add your profile
+- [Create a new public gist](https://gist.github.com/)
+- Complete the '_Gist description..._' and '_Filename including extension..._' fields. These fields are not used by the app, but should be meaningful to you.
+- For the Gist content, enter some text. Describe yourself, use a oneliner, a
+    movie quote, anything you like.
+- Save the gist, and post your {{public name}} and the Gist URL to the WebDevATL [Slack channel](https://webdevatlanta.slack.com).
+
+## For administrators
+To add a new member, administrators open the
+[memberlist.js](https://gist.githubusercontent.com/abrie/f33af17591e8ab04458cd76b3764f222/raw/64043f4194e60dc781c7a3dcc74b1eda3427769e/memberlist.js) gist and add a new dictionary to the memberlist array.
+
+
+All Gists urls have the following format:
+```https://gist.githubusercontent.com/{{username}}/{{gistid}}```
+
+Follow this template, using the values defined above:
+```
+{
+  "name":"{{public name}}",
+  "github_username":"{{username}}",
+  "gist_id":"${gistid}"
+}
+```
+
+Save the gist. **If there is an error in the json, you'll see and error in the
+console.**
+
+## Learn names using a game
+(under development)
+
+# Contributing to Development
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
