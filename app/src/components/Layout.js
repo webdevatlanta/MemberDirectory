@@ -138,7 +138,6 @@ class Layout extends Component {
               {/* Return the cards in a random order */}
               {this.props.data.cards
                 .filter(card => !card.error)
-                .sort((a, b) => 0.5 - Math.random())
                 .map((card, index) => (
                   <Grid item key={card.name} xs={12} sm={6} md={4}>
                     <Card className={classes.card} style={{ cursor: "grab" }}>
