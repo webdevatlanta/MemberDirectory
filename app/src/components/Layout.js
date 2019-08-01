@@ -109,7 +109,7 @@ class Layout extends Component {
               <div className={classes.heroButtons}>
                 <Grid container spacing={2} justify="center">
                   <Grid item>
-                    <Button variant="contained" color="secondary">
+                    <Button variant="contained" color="secondary" href="https://www.meetup.com/webdevatlanta/" target="_window">
                       Join Us!
                     </Button>
                   </Grid>
