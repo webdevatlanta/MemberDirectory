@@ -2,6 +2,10 @@
 // and https://github.com/jefflau/jest-fetch-mock#using-with-create-react-app
 global.fetch = require('jest-fetch-mock');
 
+const mockMath = Object.create(global.Math);
+mockMath.random = () => 0.25;
+global.Math = mockMath;
+
 global.TEST_DIRECTORY = {
   members: [
     {
