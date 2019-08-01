@@ -13,5 +13,9 @@ export default {
         .map(ProfileAPI.assignProfile)
 
       return Promise.all(cards)
+  },
+
+  randomizeOrder(cards) {
+    return cards.sort( () => Math.random() - 0.5 );
   }
 };

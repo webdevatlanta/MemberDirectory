@@ -21,3 +21,9 @@ it('returns error if the member directory is unparsable', () => {
   return CardAPI.buildCards(config.member_masterlist)
     .catch(e => expect(e).toEqual(expectedError) );
 })
+
+it('randomizes the card order', () => {
+  // See setupTests.js for mocked Math.random()
+  const arr = CardAPI.randomizeOrder([3,2,1]);
+  expect(arr).toEqual([1,2,3]);
+});
