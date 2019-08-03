@@ -9,7 +9,6 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/styles";
 import Container from "@material-ui/core/Container";
-import BottomAppBar from "./BottomAppBar";
 import WebDevAtlantaLogo from "../assets/images/WDA-logo.png";
 
 class Layout extends Component {
@@ -206,7 +205,6 @@ class Layout extends Component {
                 ))}
             </Grid>
           </Container>
-          <BottomAppBar />
         </main>
         {/* Footer */}
         <footer className={classes.footer}>
