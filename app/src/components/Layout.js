@@ -9,7 +9,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/styles";
 import Container from "@material-ui/core/Container";
-import BottomAppBar from "./BottomAppBar";
+import TopAppBar from "./TopAppBar";
 import WebDevAtlantaLogo from "../assets/images/WDA-logo.png";
 
 class Layout extends Component {
@@ -79,6 +79,7 @@ class Layout extends Component {
     const { classes } = this.props;
     return (
       <>
+        <TopAppBar />
         <CssBaseline />
         <main>
           {/* Hero unit */}
@@ -151,22 +152,22 @@ class Layout extends Component {
                           {this.state.showName ? (
                             card.name
                           ) : (
-                            <input
-                              type="text"
-                              name={
-                                card.github_username.toUpperCase() + "-" + index
-                              }
-                              data-id={index}
-                              id={
-                                card.github_username.toUpperCase() + "-" + index
-                              }
-                              value={this.state.names[index].name}
-                              className="name"
-                              onChange={e => this.onNameChange(index, e)}
-                              onMouseDown={e => e.stopPropagation()}
-                              onKeyDown={e => this.onNameKeyDown(index, e)}
-                            />
-                          )}
+                              <input
+                                type="text"
+                                name={
+                                  card.github_username.toUpperCase() + "-" + index
+                                }
+                                data-id={index}
+                                id={
+                                  card.github_username.toUpperCase() + "-" + index
+                                }
+                                value={this.state.names[index].name}
+                                className="name"
+                                onChange={e => this.onNameChange(index, e)}
+                                onMouseDown={e => e.stopPropagation()}
+                                onKeyDown={e => this.onNameKeyDown(index, e)}
+                              />
+                            )}
                         </Typography>
                         <Typography>{card.profile.status}</Typography>
                       </CardContent>
@@ -206,7 +207,6 @@ class Layout extends Component {
                 ))}
             </Grid>
           </Container>
-          <BottomAppBar />
         </main>
         {/* Footer */}
         <footer className={classes.footer}>
