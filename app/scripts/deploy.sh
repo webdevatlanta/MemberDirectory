@@ -24,6 +24,9 @@ then
   fi
 fi
 
+# Prune existing worktree, as a precaution.
+git worktree prune
+
 # Connect the origin/gh-pages branch to a folder of the same name.
 git worktree add gh-pages origin/gh-pages
 
