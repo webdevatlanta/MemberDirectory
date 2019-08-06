@@ -5,13 +5,13 @@ trap 'exit' ERR
 git worktree add gh-pages origin/gh-pages
 
 # Remove everything in there.
-(cd gh-pages; git rm -r *)
+(cd gh-pages && git rm -r *)
 
-# Now move everything back (including new stuff, if available).
+# Move everything back (including new stuff, if available).
 cp -R build/ gh-pages/
 
-# And now commit and push the contents.
-(cd gh-pages; git add .; git commit -m "Deploy."; git push origin HEAD:gh-pages)
+# Commit and push the contents.
+(cd gh-pages && git add . && git commit -m "Deploy." && git push origin HEAD:gh-pages)
 
 # Then clean up (unmount) the gh-pages worktree.
 git worktree remove gh-pages
