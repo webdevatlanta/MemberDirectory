@@ -1,8 +1,8 @@
 # WebDevATL Member Directory
 
 ## What is it?
-A directory of [WebDevATL](https://www.meetup.com/WebDevAtlanta/) members.
-It runs [here](https://todo) (TODO: Deploy!)
+A directory of [WebDevAtlanta MeetUp](https://www.meetup.com/WebDevAtlanta/) members.
+The directory is hosted [here](https://webdevatlanta.github.io/MemberDirectory) (TODO: Deploy!)
 
 ## How does it work?
 
@@ -16,7 +16,16 @@ avatar, and a small plaintext blurb.
 - Complete the '_Gist description..._' and '_Filename including extension..._' fields. These fields are not used by the app, but should be meaningful to you.
 - For the Gist content, enter some text. Describe yourself, use a oneliner, a
     movie quote, anything you like.
-- Save the gist, and post your {{public name}} and the Gist URL to the WebDevATL [Slack channel](https://webdevatlanta.slack.com).
+- Save the gist, and post your name and the Gist URL to the WebDevATL [Slack channel](https://webdevatlanta.slack.com).
+### Advanced profiles
+By default, your Github avatar image will be shown in the profile card. To use a different image, you'll need to use JSON in your profile gist. Here is an example:
+
+```
+{
+  "avatar": "https://image.example.com/your-profile-image.png",
+  "status": "This is where you put your profile text."
+}
+```
 
 ## For administrators
 To add a new member, administrators open the
@@ -24,14 +33,16 @@ To add a new member, administrators open the
 
 
 All Gists urls have the following format:
-```https://gist.githubusercontent.com/{{username}}/{{gistid}}```
+```
+https://gist.githubusercontent.com/{{github_username}}/{{gistid}}
+```
 
 Follow this template, using the values defined above:
 ```
 {
-  "name":"{{public name}}",
-  "github_username":"{{username}}",
-  "gist_id":"${gistid}"
+  "name":"{{name}}",
+  "github_username":"{{github_username}}",
+  "gist_id":"${{gistid}}"
 }
 ```
 
