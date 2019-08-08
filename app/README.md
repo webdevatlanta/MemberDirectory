@@ -2,7 +2,7 @@
 
 ## What is it?
 A directory of [WebDevATL](https://www.meetup.com/WebDevAtlanta/) members.
-It runs [here](https://todo) (TODO: Deploy!)
+It runs [here](https://webdevatlanta.github.io/MemberDirectory)
 
 ## How does it work?
 
