@@ -18,13 +18,25 @@ avatar, and a small plaintext blurb.
     movie quote, anything you like.
 - Save the gist, and post your {{public name}} and the Gist URL to the WebDevATL [Slack channel](https://webdevatlanta.slack.com).
 
+### Advanced profiles
+By default, your Github avatar image will be shown in the profile card. To use a different image, use JSON in your profile gist. Here is an example:
+
+```
+{
+  "avatar": "https://image.example.com/your-profile-image.png",
+  "status": "This is where you put your profile text."
+}
+```
+
 ## For administrators
 To add a new member, administrators open the
 [memberlist.js](https://gist.githubusercontent.com/abrie/f33af17591e8ab04458cd76b3764f222/raw/64043f4194e60dc781c7a3dcc74b1eda3427769e/memberlist.js) gist and add a new dictionary to the memberlist array.
 
 
 All Gists urls have the following format:
-```https://gist.githubusercontent.com/{{username}}/{{gistid}}```
+```
+https://gist.githubusercontent.com/{{username}}/{{gistid}}
+```
 
 Follow this template, using the values defined above:
 ```
