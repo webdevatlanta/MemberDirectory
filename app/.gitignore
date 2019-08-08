@@ -11,6 +11,9 @@
 # production
 /build
 
+# deploy
+/gh-pages
+
 # misc
 .DS_Store
 .env.local
