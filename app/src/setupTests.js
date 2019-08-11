@@ -23,3 +23,5 @@ global.TEST_MEMBER_MASTERLIST = {
 
 global.TEST_MEMBER_1_PROFILE = 'Member 1 Profile Contents';
 global.TEST_MEMBER_2_PROFILE = 'Member 2 Profile Contents';
+
+Object.freeze(global.TEST_MEMBER_MASTERLIST)

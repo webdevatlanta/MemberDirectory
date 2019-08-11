@@ -1,12 +1,7 @@
 import * as api from './ProfileAPI.js';
 import TestConfig from '../config.test.json';
 
-const TestMember = {
-  name: 'foo',
-  github_username: 'bar',
-  gist_id: 'abc123',
-};
-Object.freeze(TestMember);
+const TestMember = TEST_MEMBER_MASTERLIST.members[0]
 
 const TestMember_JSONProfile = {
   avatar: 'https://url/to/avatar',
@@ -22,12 +17,12 @@ Object.freeze(TestMember_JSONProfile_NoAvatar);
 const TestMember_TextProfile = 'Hi, this is a text profile.';
 
 it('assigns a valid profile gist url', () => {
-  const expected = 'https://gist.githubusercontent.com/bar/abc123/raw';
+  const expected = 'https://gist.githubusercontent.com/foofoo/123/raw';
   expect(api.assignGistUrl(TestMember).gist_url).toEqual(expected);
 });
 
 it('assigns a valid github profile url', () => {
-  const expected = 'https://github.com/bar';
+  const expected = 'https://github.com/foofoo';
   expect(api.assignGithubUrl(TestMember).github_url).toEqual(expected);
 });
 
