@@ -3,12 +3,13 @@ import config from  '../config.test.json'
 
 it('fetches memberlist and gists when building cards', () => {
   fetch.resetMocks();
-  fetch.mockResponseOnce(JSON.stringify(TEST_DIRECTORY));
+  fetch.mockResponseOnce(JSON.stringify(TEST_MEMBER_MASTERLIST));
   fetch.mockResponseOnce(TEST_MEMBER_1);
   fetch.mockResponseOnce(TEST_MEMBER_2);
 
-  return CardAPI.buildCards(config.member_masterlist)
-    .then( members => expect(members.length).toEqual(TEST_DIRECTORY.members.length) )
+  const {member_masterlist} = config
+  return CardAPI.buildCards(member_masterlist)
+    .then( members => expect(members.length).toEqual(TEST_MEMBER_MASTERLIST.members.length) )
 })
 
 it('returns error if the member directory is unparsable', () => {

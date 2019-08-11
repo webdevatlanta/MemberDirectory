@@ -6,7 +6,7 @@ const mockMath = Object.create(global.Math);
 mockMath.random = () => 0.25;
 global.Math = mockMath;
 
-global.TEST_DIRECTORY = {
+global.TEST_MEMBER_MASTERLIST = {
   members: [
     {
       name: 'foo',

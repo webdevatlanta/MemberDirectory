@@ -34,7 +34,7 @@ it('renders without crashing', () => {
   });
 
   act(() => {
-    resolveMemberList({body: JSON.stringify(TEST_DIRECTORY)});
+    resolveMemberList({body: JSON.stringify(TEST_MEMBER_MASTERLIST)});
   });
 
   ReactDOM.unmountComponentAtNode(div);
