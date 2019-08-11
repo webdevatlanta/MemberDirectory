@@ -18,11 +18,11 @@ it('renders without crashing', () => {
           resolveMemberList = resolve;
         }),
     ],
-    [TEST_MEMBER_1],
+    [TEST_MEMBER_1_PROFILE],
     [
       () =>
         new Promise(resolve =>
-          setTimeout(() => resolve({body: TEST_MEMBER_2}), 0),
+          setTimeout(() => resolve({body: TEST_MEMBER_2_PROFILE}), 0),
         ),
     ],
   );
