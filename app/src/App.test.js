@@ -18,11 +18,11 @@ it('renders without crashing', () => {
           resolveMemberList = resolve;
         }),
     ],
-    [TEST_MEMBER_1],
+    [TEST_FOO_PROFILE],
     [
       () =>
         new Promise(resolve =>
-          setTimeout(() => resolve({body: TEST_MEMBER_2}), 0),
+          setTimeout(() => resolve({body: TEST_BAR_PROFILE}), 0),
         ),
     ],
   );
@@ -34,7 +34,7 @@ it('renders without crashing', () => {
   });
 
   act(() => {
-    resolveMemberList({body: JSON.stringify(TEST_DIRECTORY)});
+    resolveMemberList({body: JSON.stringify(TEST_MEMBER_MASTERLIST)});
   });
 
   ReactDOM.unmountComponentAtNode(div);
