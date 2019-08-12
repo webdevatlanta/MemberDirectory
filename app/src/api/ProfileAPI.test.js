@@ -1,6 +1,10 @@
 import * as api from './ProfileAPI.js';
 import TestConfig from '../config.test.json';
 
+afterEach(() => {
+  fetch.resetMocks();
+});
+
 it('assigns a valid profile gist url', () => {
   const expected = 'https://gist.githubusercontent.com/foofoo/123/raw';
   expect(api.assignGistUrl(TEST_MEMBER_FOO).gist_url).toEqual(expected);
@@ -12,7 +16,6 @@ it('assigns a valid github profile url', () => {
 });
 
 it('profile assignment does 1 fetch from gist_url', () => {
-  fetch.resetMocks();
   fetch.mockResponseOnce(TEST_FOO_PROFILE);
 
   const input = api.assignGistUrl(TEST_MEMBER_FOO);
@@ -23,7 +26,6 @@ it('profile assignment does 1 fetch from gist_url', () => {
 });
 
 it('fetches profile as text and assigns default avatar', () => {
-  fetch.resetMocks();
   fetch.mockResponseOnce(TEST_FOO_PROFILE);
 
   const avatar = `https://github.com/${TEST_MEMBER_FOO.github_username}.png?size=460`;
@@ -35,7 +37,6 @@ it('fetches profile as text and assigns default avatar', () => {
 });
 
 it('fetches profile as json and assigns default avatar', () => {
-  fetch.resetMocks();
   fetch.mockResponseOnce(JSON.stringify(TEST_BAZ_PROFILE));
 
   const avatar = `https://github.com/${TEST_MEMBER_BAZ.github_username}.png?size=460`;
@@ -47,7 +48,6 @@ it('fetches profile as json and assigns default avatar', () => {
 });
 
 it('fetches profile as json with avatar specified', () => {
-  fetch.resetMocks();
   fetch.mockResponseOnce(JSON.stringify(TEST_BAR_PROFILE));
 
   const input = api.assignGistUrl(TEST_MEMBER_FOO);
@@ -58,8 +58,6 @@ it('fetches profile as json with avatar specified', () => {
 });
 
 it('builds profile using json gist', () => {
-  fetch.resetMocks();
-
   const JSONString = JSON.stringify(TEST_BAR_PROFILE);
   fetch.mockResponseOnce(JSONString);
 
@@ -71,7 +69,6 @@ it('builds profile using json gist', () => {
 });
 
 it('builds profile using text gist', () => {
-  fetch.resetMocks();
   fetch.mockResponseOnce(TEST_FOO_PROFILE);
 
   return fetch('mocked-fetch-here')
@@ -85,7 +82,6 @@ it('returns error for failed gist fetch', () => {
   const m = api.assignGistUrl(TEST_MEMBER_FOO);
   const expected = new Error('An error, how... expected!');
 
-  fetch.resetMocks();
   fetch.mockReject(expected);
 
   return api.assignProfile(m).then(m_out => {
@@ -94,7 +90,6 @@ it('returns error for failed gist fetch', () => {
 });
 
 it('fetches memberlist', () => {
-  fetch.resetMocks();
   fetch.mockResponseOnce(JSON.stringify(TEST_MEMBER_MASTERLIST));
 
   return api.fetchDirectory(TestConfig).then(directory => {
@@ -107,7 +102,6 @@ it('fetches memberlist', () => {
 
 it('returns error if memberlist fetch fails', () => {
   const expectedError = 'member directory is invalid json';
-  fetch.resetMocks();
   fetch.mockReject(expectedError);
 
   return api.fetchDirectory(TestConfig).then(response => {
@@ -117,7 +111,6 @@ it('returns error if memberlist fetch fails', () => {
 });
 
 it('returns error for unparseable memberlist json', () => {
-  fetch.resetMocks();
   fetch.mockResponseOnce(`{"this comma->","is bad."}`);
 
   return api.fetchDirectory(TestConfig).then(response => {

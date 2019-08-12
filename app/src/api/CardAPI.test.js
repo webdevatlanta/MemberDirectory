@@ -1,8 +1,11 @@
 import CardAPI from './CardAPI.js'
 import config from  '../config.test.json'
 
-it('fetches memberlist and gists when building cards', () => {
+afterEach(() => {
   fetch.resetMocks();
+});
+
+it('fetches memberlist and gists when building cards', () => {
   fetch.mockResponseOnce(JSON.stringify(TEST_MEMBER_MASTERLIST));
   fetch.mockResponseOnce(TEST_FOO_PROFILE);
   fetch.mockResponseOnce(TEST_BAR_PROFILE);
@@ -13,7 +16,6 @@ it('fetches memberlist and gists when building cards', () => {
 })
 
 it('returns error if the member directory is unparsable', () => {
-  fetch.resetMocks();
   fetch.mockResponseOnce(`{"badjson","<- due to unexpected comma"}`)
 
   expect.assertions(1);
