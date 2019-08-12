@@ -18,11 +18,11 @@ it('renders without crashing', () => {
           resolveMemberList = resolve;
         }),
     ],
-    [TEST_MEMBER_1_PROFILE],
+    [TEST_FOO_PROFILE],
     [
       () =>
         new Promise(resolve =>
-          setTimeout(() => resolve({body: TEST_MEMBER_2_PROFILE}), 0),
+          setTimeout(() => resolve({body: TEST_BAR_PROFILE}), 0),
         ),
     ],
   );

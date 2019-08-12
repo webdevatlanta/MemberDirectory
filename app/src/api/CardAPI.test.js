@@ -4,8 +4,8 @@ import config from  '../config.test.json'
 it('fetches memberlist and gists when building cards', () => {
   fetch.resetMocks();
   fetch.mockResponseOnce(JSON.stringify(TEST_MEMBER_MASTERLIST));
-  fetch.mockResponseOnce(TEST_MEMBER_1_PROFILE);
-  fetch.mockResponseOnce(TEST_MEMBER_2_PROFILE);
+  fetch.mockResponseOnce(TEST_FOO_PROFILE);
+  fetch.mockResponseOnce(TEST_BAR_PROFILE);
 
   const {member_masterlist} = config
   return CardAPI.buildCards(member_masterlist)
