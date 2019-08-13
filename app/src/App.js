@@ -23,11 +23,9 @@ function App(props) {
     async function buildCards(config) {
       const {member_masterlist} = config;
       await CardAPI.buildCards(member_masterlist)
-        .then( CardAPI.randomizeOrder )
+        .then(CardAPI.randomizeOrder)
         .then(cards => setData({cards}))
-        .catch((error) => {
-          console.error(error)
-        });
+        .catch(error => console.error(error));
     }
     buildCards(props.config);
   }, [props.config]);
@@ -41,7 +39,7 @@ function App(props) {
       </div>
     );
   } else {
-    return "Loading...";
+    return 'Loading...';
   }
 }
 

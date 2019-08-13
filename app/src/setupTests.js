@@ -6,20 +6,43 @@ const mockMath = Object.create(global.Math);
 mockMath.random = () => 0.25;
 global.Math = mockMath;
 
-global.TEST_DIRECTORY = {
+global.MOCK_MEMBER_FOO = {
+  name: 'foo',
+  github_username: 'foofoo',
+  gist_id: '123',
+}
+
+global.MOCK_MEMBER_BAR = {
+  name: 'bar',
+  github_username: 'barbar',
+  gist_id: 'abc',
+}
+
+global.MOCK_MEMBER_BAZ = {
+  name: 'baz',
+  github_username: 'bazbaz',
+  gist_id: 'xyz',
+}
+
+global.MOCK_DIRECTORY = {
   members: [
-    {
-      name: 'foo',
-      github_username: 'foofoo',
-      gist_id: '123',
-    },
-    {
-      name: 'bar',
-      github_username: 'barbar',
-      gist_id: 'abc',
-    },
+    MOCK_MEMBER_FOO,
+    MOCK_MEMBER_BAR
   ],
 };
 
-global.TEST_MEMBER_1 = 'Member 1 Profile Contents';
-global.TEST_MEMBER_2 = 'Member 2 Profile Contents';
+Object.freeze(global.MOCK_DIRECTORY)
+
+global.MOCK_FOO_PROFILE = 'Member 1 Profile Contents';
+Object.freeze(global.MOCK_FOO_PROFILE);
+
+global.MOCK_BAR_PROFILE = {
+  avatar: 'https://url/to/avatar',
+  status: 'Hi, this is a json profile.',
+};
+Object.freeze(global.MOCK_BAR_PROFILE);
+
+global.MOCK_BAZ_PROFILE = {
+  status: 'Hi, this is a json profile without an avatar.',
+};
+Object.freeze(global.MOCK_BAZ_PROFILE);
