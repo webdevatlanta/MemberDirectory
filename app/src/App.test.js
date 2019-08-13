@@ -7,9 +7,9 @@ import Config from './config.test.json';
 it('renders without crashing', async () => {
   fetch.resetMocks();
 
-  fetch.mockResponseOnce( JSON.stringify(TEST_MEMBER_MASTERLIST) );
-  fetch.mockResponseOnce( JSON.stringify(TEST_FOO_PROFILE) );
-  fetch.mockResponseOnce( JSON.stringify(TEST_BAR_PROFILE) );
+  fetch.mockResponseOnce( JSON.stringify(MOCK_MEMBER_MASTERLIST) );
+  fetch.mockResponseOnce( JSON.stringify(MOCK_FOO_PROFILE) );
+  fetch.mockResponseOnce( JSON.stringify(MOCK_BAR_PROFILE) );
 
   const div = document.createElement('div');
 

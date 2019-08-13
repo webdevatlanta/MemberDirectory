@@ -6,13 +6,13 @@ afterEach(() => {
 });
 
 it('fetches memberlist and gists when building cards', () => {
-  fetch.mockResponseOnce(JSON.stringify(TEST_MEMBER_MASTERLIST));
-  fetch.mockResponseOnce(TEST_FOO_PROFILE);
-  fetch.mockResponseOnce(TEST_BAR_PROFILE);
+  fetch.mockResponseOnce(JSON.stringify(MOCK_MEMBER_MASTERLIST));
+  fetch.mockResponseOnce(MOCK_FOO_PROFILE);
+  fetch.mockResponseOnce(MOCK_BAR_PROFILE);
 
   const {member_masterlist} = config
   return CardAPI.buildCards(member_masterlist)
-    .then( members => expect(members.length).toEqual(TEST_MEMBER_MASTERLIST.members.length) )
+    .then( members => expect(members.length).toEqual(MOCK_MEMBER_MASTERLIST.members.length) )
 })
 
 it('returns error if the member directory is unparsable', () => {
