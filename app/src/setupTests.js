@@ -24,14 +24,14 @@ global.MOCK_MEMBER_BAZ = {
   gist_id: 'xyz',
 }
 
-global.MOCK_MEMBER_MASTERLIST = {
+global.MOCK_DIRECTORY = {
   members: [
     MOCK_MEMBER_FOO,
     MOCK_MEMBER_BAR
   ],
 };
 
-Object.freeze(global.MOCK_MEMBER_MASTERLIST)
+Object.freeze(global.MOCK_DIRECTORY)
 
 global.MOCK_FOO_PROFILE = 'Member 1 Profile Contents';
 Object.freeze(global.MOCK_FOO_PROFILE);

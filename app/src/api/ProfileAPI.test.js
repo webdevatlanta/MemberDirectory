@@ -90,12 +90,12 @@ it('returns error for failed gist fetch', () => {
 });
 
 it('fetches memberlist', () => {
-  fetch.mockResponseOnce(JSON.stringify(MOCK_MEMBER_MASTERLIST));
+  fetch.mockResponseOnce(JSON.stringify(MOCK_DIRECTORY));
 
   return api.fetchDirectory(TestConfig).then(directory => {
     expect(fetch.mock.calls.length).toEqual(1);
     expect(directory.members.length).toEqual(
-      MOCK_MEMBER_MASTERLIST.members.length,
+      MOCK_DIRECTORY.members.length,
     );
   });
 });

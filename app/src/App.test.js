@@ -7,7 +7,7 @@ import Config from './config.test.json';
 it('renders without crashing', async () => {
   fetch.resetMocks();
 
-  fetch.mockResponseOnce( JSON.stringify(MOCK_MEMBER_MASTERLIST) );
+  fetch.mockResponseOnce( JSON.stringify(MOCK_DIRECTORY) );
   fetch.mockResponseOnce( JSON.stringify(MOCK_FOO_PROFILE) );
   fetch.mockResponseOnce( JSON.stringify(MOCK_BAR_PROFILE) );
 
