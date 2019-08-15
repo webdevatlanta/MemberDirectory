@@ -30,17 +30,13 @@ function App(props) {
     buildCards(props.config);
   }, [props.config]);
 
-  if (cards) {
-    return (
-      <div className="App">
-        <ThemeProvider theme={theme}>
-          <Layout cards={cards} />
-        </ThemeProvider>
-      </div>
-    );
-  } else {
-    return 'Loading...';
-  }
+  return (
+    <div className="App">
+      <ThemeProvider theme={theme}>
+        <Layout cards={cards} />
+      </ThemeProvider>
+    </div>
+  );
 }
 
 export default App;
