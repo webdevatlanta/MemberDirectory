@@ -16,7 +16,7 @@ class Layout extends Component {
   constructor(props) {
     super(props);
     let namesArray = [];
-    for (let i = 0; i < props.data.cards.length; i++) {
+    for (let i = 0; i < props.cards.length; i++) {
       namesArray.push({ name: undefined });
     }
     this.state = {
@@ -47,7 +47,7 @@ class Layout extends Component {
    */
   onNameKeyDown(index, e) {
     if (e.key === "Enter") {
-      let answer = this.props.data.cards[index].name
+      let answer = this.props.cards[index].name
         .toUpperCase()
         .split(" ")[0];
       let guess = e.target.value.toUpperCase().split(" ")[0];
@@ -56,7 +56,7 @@ class Layout extends Component {
       if (guessResult) {
         alert(`
         Your guess was: ${guess.charAt(0).toUpperCase() +
-          guess.slice(1).toLowerCase()}. 
+          guess.slice(1).toLowerCase()}.
         The answer is ${answer.charAt(0).toUpperCase() +
           answer.slice(1).toLowerCase()}. 
         You got it right!
@@ -137,7 +137,7 @@ class Layout extends Component {
             {/* Valid cards are show here */}
             <Grid container spacing={4}>
               {/* Return the cards in a random order */}
-              {this.props.data.cards
+              {this.props.cards
                 .filter(card => !card.error)
                 .map((card, index) => (
                   <Grid item key={card.name} xs={12} sm={6} md={4}>
@@ -189,7 +189,7 @@ class Layout extends Component {
 
             {/* Cards with errors are shown here */}
             <Grid container spacing={4}>
-              {this.props.data.cards
+              {this.props.cards
                 .filter(card => !!card.error)
                 .map(card => (
                   <Grid item key={card.name} xs={12} sm={6} md={4}>
