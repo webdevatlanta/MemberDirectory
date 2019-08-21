@@ -1,21 +1,37 @@
-import React, {Component} from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import {withStyles} from '@material-ui/styles';
+import {makeStyles} from '@material-ui/styles';
 import Container from '@material-ui/core/Container';
 import TopAppBar from './TopAppBar';
 import WebDevAtlantaLogo from '../assets/images/WDA-logo.png';
 import CardGrid from './CardGrid';
 
-class Layout extends Component {
-  render() {
-    const {classes} = this.props;
+function themedStyles(theme) {
+  return {
+    icon: {
+      marginRight: theme.spacing(2),
+    },
+    heroContent: {
+      backgroundColor: theme.palette.background.paper,
+      padding: theme.spacing(8, 0, 6),
+    },
+    heroButtons: {
+      marginTop: theme.spacing(4),
+    },
+    footer: {
+      backgroundColor: theme.palette.background.paper,
+      padding: theme.spacing(6),
+    },
+  }
+}
+
+const useStyles = makeStyles(themedStyles);
+
+export default function({cards}) {
+  const classes = useStyles();
     return (
       <>
         <TopAppBar />
@@ -62,7 +78,7 @@ class Layout extends Component {
           </div>{' '}
           {/* End hero unit */}
 
-          <CardGrid cards={this.props.cards}/>
+          <CardGrid cards={cards}/>
 
         </main>
         {/* Footer */}
@@ -81,24 +97,4 @@ class Layout extends Component {
         {/* End footer */}
       </>
     );
-  }
 }
-
-const styles = theme => ({
-  icon: {
-    marginRight: theme.spacing(2),
-  },
-  heroContent: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(8, 0, 6),
-  },
-  heroButtons: {
-    marginTop: theme.spacing(4),
-  },
-  footer: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(6),
-  },
-});
-
-export default withStyles(styles)(Layout);
