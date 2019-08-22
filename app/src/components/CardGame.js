@@ -18,7 +18,7 @@ class CardGrid extends Component {
       namesArray.push({name: undefined});
     }
     this.state = {
-      showName: true,
+      showName: false,
       names: namesArray,
       score: 0,
     };
