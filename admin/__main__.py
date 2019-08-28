@@ -4,13 +4,14 @@ import urllib.request
 import urllib.parse
 
 from handler import handler
+from config import config
 
-host = ('localhost', 3001)
-config = handler.load_config("secrets/github-oauth.json")
+HOST = ('localhost', 3001)
+CONFIG = config.load("secrets/github-oauth.json")
 
 if __name__ == '__main__':
-    httpd = HTTPServer(host, handler.create(config))
-    print(time.asctime(), "Server start - %s:%s" % host)
+    httpd = HTTPServer(HOST, handler.create(CONFIG))
+    print(time.asctime(), "Server start - %s:%s" % HOST)
 
     try:
         httpd.serve_forever()
@@ -18,4 +19,4 @@ if __name__ == '__main__':
         pass
 
     httpd.server_close()
-    print(time.asctime(), "Server stop - %s:%s" % host)
+    print(time.asctime(), "Server stop - %s:%s" % HOST)

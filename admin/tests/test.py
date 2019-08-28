@@ -14,7 +14,7 @@ AUTH_CODE = "AuthCode123"
 BAD_CODE = "BadAuthCode123"
 ACCESS_TOKEN = "AccessToken123"
 
-config = {
+CONFIG = {
     "REQUEST_CODE": "%s/login/oauth/authorize" % (REMOTE),
     "REQUEST_TOKEN": "%s/login/oauth/access_token" % (REMOTE),
     "CLIENT_ID": "client-id-123",
@@ -53,7 +53,7 @@ class Test(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.queue = queue.Queue()
-        httpd = HTTPServer(("localhost", 3007), handler.create(config))
+        httpd = HTTPServer(("localhost", 3007), handler.create(CONFIG))
         httpd_thread = threading.Thread(target=httpd.serve_forever)
         httpd_thread.setDaemon(True)
         httpd_thread.start()
@@ -72,9 +72,9 @@ class Test(unittest.TestCase):
       with urllib.request.urlopen("%s/auth-callback?code=%s" % (MIDDLEWARE, AUTH_CODE)) as response:
           # Expect to be redirected to a preconfigured url, with access_token as a query param.
           self.assertEqual(response.geturl(), "%s?access_token=%s" %
-                           (config["REDIRECT_URI"], ACCESS_TOKEN))
+                           (CONFIG["REDIRECT_URI"], ACCESS_TOKEN))
 
       item = self.__class__.queue.get()
-      self.assertEqual(item['client_id'][0], config["CLIENT_ID"])
-      self.assertEqual(item['client_secret'][0], config["CLIENT_SECRET"])
+      self.assertEqual(item['client_id'][0], CONFIG["CLIENT_ID"])
+      self.assertEqual(item['client_secret'][0], CONFIG["CLIENT_SECRET"])
       self.assertEqual(item['code'][0], AUTH_CODE)

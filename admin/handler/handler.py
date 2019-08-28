@@ -1,6 +1,6 @@
 import time
-import json
 import re
+import json
 from http.server import BaseHTTPRequestHandler
 import urllib.request
 import urllib.parse
@@ -8,13 +8,6 @@ import urllib.parse
 AUTH_CALLBACK_PATTERN = re.compile("\/auth-callback\?code=(\w+)$")
 AUTH_REDIRECT_PATTERN = re.compile("\/auth-callback/redirect")
 
-def load_config(filename):
-    try:
-        with open(filename) as file:
-            return json.load(file)
-    except:
-        print(time.asctime(), "Failed to load config:", filename)
-        raise SystemExit("terminating.");
 
 def create(config):
     class Handler(BaseHTTPRequestHandler):
@@ -23,7 +16,7 @@ def create(config):
           if authRedirect:
               print("this is the redirect callback", s.path)
               s.send_response(200)
-              s.send_header('Content-type','text/html')
+              s.send_header('Content-type', 'text/html')
               s.end_headers()
               s.wfile.write("Hello".encode())
               return
@@ -41,12 +34,14 @@ def create(config):
                       response = json.load(f)
                       if "error" in response:
                           s.send_response(200)
-                          s.send_header('Content-type','text/html')
+                          s.send_header('Content-type', 'text/html')
                           s.end_headers()
-                          s.wfile.write("Failed to get OAuth authorization".encode())
+                          s.wfile.write(
+                              "Failed to get OAuth authorization".encode())
                           pass
                       elif "access_token" in response:
-                          redirect_uri = config["REDIRECT_URI"] + "?" + "access_token=%s" % (response["access_token"])
+                          redirect_uri = config["REDIRECT_URI"] + "?" + \
+                              "access_token=%s" % (response["access_token"])
                           s.send_response(301)
                           s.send_header('Location', redirect_uri)
                           s.end_headers()
