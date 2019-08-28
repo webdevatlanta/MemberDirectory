@@ -2,7 +2,8 @@ import time
 from http.server import HTTPServer
 import urllib.request
 import urllib.parse
-import handler
+
+from handler import handler
 
 host = ('localhost', 3001)
 config = handler.load_config("secrets/github-oauth.json")

@@ -1,18 +1,12 @@
-dependencies:
-	python3 -m venv .
-	( \
-	   source ./bin/activate; \
-	   pip install -r requirements.txt; \
-	)
+venv: venv/bin/activate
 
-start:
-	@( \
-	   source ./bin/activate; \
-	   python3 server; \
-	)
+venv/bin/activate: requirements.txt
+	test -d venv || python3 -m venv venv
+	. venv/bin/activate; pip install -Ur requirements.txt
+	touch venv/bin/activate
 
-test:
-	@( \
-	   source ./bin/activate; \
-	   python3 -m unittest tests/test.py; \
-	)
+start: venv
+	. venv/bin/activate; python .
+
+test: venv
+	. venv/bin/activate; python -m unittest tests/test.py
