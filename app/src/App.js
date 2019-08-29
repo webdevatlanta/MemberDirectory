@@ -17,30 +17,26 @@ const theme = createMuiTheme({
 });
 
 function App(props) {
-  const [data, setData] = useState({cards: []});
+  const [cards, setCards] = useState([]);
 
   useEffect(() => {
     async function buildCards(config) {
       const {member_masterlist} = config;
       await CardAPI.buildCards(member_masterlist)
         .then(CardAPI.randomizeOrder)
-        .then(cards => setData({cards}))
+        .then(cards => setCards(cards))
         .catch(error => console.error(error));
     }
     buildCards(props.config);
   }, [props.config]);
 
-  if (data && data.cards && data.cards.length > 0) {
-    return (
-      <div className="App">
-        <ThemeProvider theme={theme}>
-          <Layout data={data} />
-        </ThemeProvider>
-      </div>
-    );
-  } else {
-    return 'Loading...';
-  }
+  return (
+    <div className="App">
+      <ThemeProvider theme={theme}>
+        <Layout cards={cards} />
+      </ThemeProvider>
+    </div>
+  );
 }
 
 export default App;
