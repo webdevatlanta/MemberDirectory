@@ -5,12 +5,14 @@ import urllib.parse
 
 from handler import handler
 from config import config
-
-HOST = ('localhost', 3001)
-CONFIG = config.load("secrets/github-oauth.json")
+from storage import storage
 
 if __name__ == '__main__':
-    httpd = HTTPServer(HOST, handler.create(CONFIG))
+    HOST = ('localhost', 3001)
+    CONFIG = config.load("./secrets/github-oauth.json")
+    STORE = storage.new_store()
+
+    httpd = HTTPServer(HOST, handler.create(CONFIG, STORAGE))
     print(time.asctime(), "Server start - %s:%s" % HOST)
 
     try:
