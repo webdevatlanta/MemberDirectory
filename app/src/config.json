@@ -1,4 +1,7 @@
 {
+  "auth": {
+    "server":"http://localhost:3001/request-authorization"
+  },
   "member_masterlist": {
     "gist_server":"https://gist.githubusercontent.com",
     "gist_user":"abrie",

@@ -9,6 +9,7 @@ import TopAppBar from './TopAppBar';
 import WebDevAtlantaLogo from '../assets/images/WDA-logo.png';
 import CardGrid from './CardGrid';
 import CardGame from './CardGame';
+import AdminPanel from './AdminPanel';
 
 function themedStyles(theme) {
   return {
@@ -31,9 +32,9 @@ function themedStyles(theme) {
 
 const useStyles = makeStyles(themedStyles);
 
-export default function({cards}) {
+export default function({cards, auth}) {
   const classes = useStyles();
-  const [playGame, setPlayGame] = useState(false);
+  const [mode, setMode] = useState({admin:false,game:false});
 
   return (
     <>
@@ -80,21 +81,39 @@ export default function({cards}) {
           </Container>
         </div>{' '}
         {/* End hero unit */}
-
         {
-          playGame ?
-          <Button
+          mode.game && <>
+            <Button
             variant="contained"
             color="secondary"
-            onClick={ () => setPlayGame(false)}> Quit </Button>
-          :
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={ () => setPlayGame(true)}> Play Name Game </Button>
+            onClick={ () => setMode({admin:false,game:false})}> Quit Game </Button>
+            <CardGame cards={cards} ></CardGame>
+          </>
         }
 
-        {playGame ? <CardGame cards={cards} /> : <CardGrid cards={cards} />}
+        {
+          mode.admin && <>
+            <Button
+            variant="contained"
+            color="secondary"
+            onClick={ () => setMode({admin:false,game:false})}> Quit Admin </Button>
+            <AdminPanel auth={auth}></AdminPanel>
+          </>
+        }
+
+        {
+          (!mode.admin && !mode.game) && <>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={ () => setMode({admin:false,game:true})}> Play Game </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={ () => setMode({admin:true,game:false})}> Administrate </Button>
+            <CardGrid cards={cards}></CardGrid>
+          </>
+        }
       </main>
       {/* Footer */}
       <footer className={classes.footer}>

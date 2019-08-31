@@ -17,6 +17,7 @@ def create(config, storage):
                 if storage.token is None:
                     s.send_response(200)
                     s.send_header('Content-type', 'application/json')
+                    s.send_header('Access-Control-Allow-Origin', '*')
                     s.end_headers()
                     redirect = config["REQUEST_CODE"] + \
                         "?client_id=%s" % (config["CLIENT_ID"])
@@ -26,6 +27,7 @@ def create(config, storage):
                 else:
                     s.send_response(200)
                     s.send_header('Content-type', 'application/json')
+                    s.send_header('Access-Control-Allow-Origin', '*')
                     s.end_headers()
                     s.wfile.write(json.dumps(
                         {"access_token": storage.token}).encode())

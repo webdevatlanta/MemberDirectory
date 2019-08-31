@@ -12,7 +12,7 @@ if __name__ == '__main__':
     CONFIG = config.load("./secrets/github-oauth.json")
     STORE = storage.new_store()
 
-    httpd = HTTPServer(HOST, handler.create(CONFIG, STORAGE))
+    httpd = HTTPServer(HOST, handler.create(CONFIG, STORE))
     print(time.asctime(), "Server start - %s:%s" % HOST)
 
     try:
