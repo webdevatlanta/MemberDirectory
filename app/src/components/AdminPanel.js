@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import Container from '@material-ui/core/Container';
+import Button from '@material-ui/core/Button';
 import {makeStyles} from '@material-ui/styles';
 import * as AuthAPI from '../api/AuthAPI';
 
@@ -13,19 +14,31 @@ const useStyles = makeStyles(themedStyles);
 export default function({auth}) {
   const classes = useStyles();
 
-  const [token, setToken] = useState("");
+  const [authResult, setAuthResult] = useState({})
 
   useEffect(() => {
-    async function loadAuth() {
-      AuthAPI.getAuthorization(auth)
-        .then( response => console.log(response) );
+    async function getAuthorization(server) {
+      const result = await AuthAPI.getAuthorization(server)
+      setAuthResult(result)
     }
-    loadAuth();
+    getAuthorization(auth.server);
   }, [auth])
 
   return (
     <Container maxWidth="md">
-      { auth.server }
+      { authResult.access_token ?
+          <span>we have authorization</span>
+          :
+          <span>please authorize using OAuth
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  href={`${authResult.redirect}`}
+                  target="_window">
+                  through GitHub.
+                </Button>
+        </span>
+      }
     </Container>
   )
 }

@@ -1,4 +1,4 @@
-export function getAuthorization({server}) {
+export function getAuthorization(server) {
   return new Promise((resolve, reject) => {
     fetch(server)
       .then(response => checkResponse(response))
