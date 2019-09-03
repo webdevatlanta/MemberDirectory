@@ -55,7 +55,7 @@ def create(config, storage):
                             s.send_response(200)
                             s.send_header('Content-type', 'text/html')
                             s.end_headers()
-                            html = "token=%s" % (storage.token)
+                            html = "<p>Ok, we've logged in. You may now close this window and reload the admin page.</p>"
                             s.wfile.write(html.encode())
                             pass
                 except urllib.error.HTTPError as err:
