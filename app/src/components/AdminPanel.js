@@ -17,11 +17,11 @@ export default function({auth}) {
   const [authResult, setAuthResult] = useState({})
 
   useEffect(() => {
-    async function getAuthorization(server) {
-      const result = await AuthAPI.getAuthorization(server)
+    async function getAuthorization(config) {
+      const result = await AuthAPI.getAuthorization(config)
       setAuthResult(result)
     }
-    getAuthorization(auth.server);
+    getAuthorization(auth);
   }, [auth])
 
   return (

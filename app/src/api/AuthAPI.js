@@ -1,6 +1,6 @@
-export function getAuthorization(server) {
+export function getAuthorization(config) {
   return new Promise((resolve, reject) => {
-    fetch(server)
+    fetch(config.server)
       .then(response => checkResponse(response))
       .then(response => response.json())
       .catch(error => resolve({error:"auth response is invalid json"}))
