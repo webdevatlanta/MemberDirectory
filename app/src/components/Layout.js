@@ -32,7 +32,7 @@ function themedStyles(theme) {
 
 const useStyles = makeStyles(themedStyles);
 
-export default function({cards, auth}) {
+export default function({cards, config}) {
   const classes = useStyles();
   const [mode, setMode] = useState({admin:false,game:false});
 
@@ -97,7 +97,7 @@ export default function({cards, auth}) {
             variant="contained"
             color="secondary"
             onClick={ () => setMode({admin:false,game:false})}> Quit Admin </Button>
-            <AdminPanel auth={auth}></AdminPanel>
+            <AdminPanel auth={config.auth} member_masterlist={config.member_masterlist}></AdminPanel>
           </>
         }
 

@@ -33,7 +33,7 @@ function App(props) {
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
-        <Layout cards={cards} auth={props.config.auth} />
+        <Layout cards={cards} config={props.config} />
       </ThemeProvider>
     </div>
   );
