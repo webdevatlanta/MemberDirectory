@@ -52,11 +52,10 @@ def create(config, storage):
                             pass
                         elif "access_token" in response:
                             storage.token = response["access_token"]
-                            s.send_response(200)
-                            s.send_header('Content-type', 'text/html')
+                            s.send_response(302)
+                            s.send_header(
+                                'Location', config["AUTHORIZATION_GRANTED"])
                             s.end_headers()
-                            html = "<p>Ok, we've logged in. You may now close this window and reload the admin page.</p>"
-                            s.wfile.write(html.encode())
                             pass
                 except urllib.error.HTTPError as err:
                     print(time.asctime(), err)

@@ -10,6 +10,7 @@ from storage import storage
 
 MIDDLEWARE = "http://localhost:3007"  # between Authority and Client
 AUTHORITY = "http://localhost:3008"
+CLIENT = "http://localhost:3009"
 
 AUTH_CODE = "AuthCode123"
 ACCESS_TOKEN = "AccessToken123"
@@ -19,12 +20,13 @@ CONFIG = {
     "REQUEST_TOKEN": "%s/login/oauth/access_token" % (AUTHORITY),
     "CLIENT_ID": "client-id-123",
     "CLIENT_SECRET": "client-secret-abc",
+    "AUTHORIZATION_GRANTED": "%s" % (CLIENT),
 }
 
 STORE = storage.new_store()
 
 
-def MockDestination(queue):
+def MockClient(queue):
     class Handler(BaseHTTPRequestHandler):
         def do_GET(s):
             s.send_response(200)
@@ -66,7 +68,13 @@ class Test(unittest.TestCase):
         authority_thread.setDaemon(True)
         authority_thread.start()
 
+        client = HTTPServer(("localhost", 3009), MockAuthority(cls.queue))
+        client_thread = threading.Thread(target=client.serve_forever)
+        client_thread.setDaemon(True)
+        client_thread.start()
+
     # GET on http://middleware/token should redirect to Authority's permissions page.
+
     def test_authorization_request(self):
         with urllib.request.urlopen("%s/token" % (MIDDLEWARE)) as response:
             redirect_expected = "%s?client_id=%s" % (
