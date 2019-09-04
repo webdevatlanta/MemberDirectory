@@ -66,9 +66,9 @@ class Test(unittest.TestCase):
         authority_thread.setDaemon(True)
         authority_thread.start()
 
-    # GET on http://middleware/request-authorization should redirect to Authority's permissions page.
+    # GET on http://middleware/token should redirect to Authority's permissions page.
     def test_authorization_request(self):
-        with urllib.request.urlopen("%s/request-authorization" % (MIDDLEWARE)) as response:
+        with urllib.request.urlopen("%s/token" % (MIDDLEWARE)) as response:
             redirect_expected = "%s?client_id=%s" % (
                 CONFIG["REQUEST_CODE"], CONFIG["CLIENT_ID"])
             js = json.load(response)
@@ -91,6 +91,6 @@ class Test(unittest.TestCase):
         self.assertEqual(STORE.token, ACCESS_TOKEN)
 
         # Once cached, a second requestion to request-authorization should return the token immediately
-        with urllib.request.urlopen("%s/request-authorization" % (MIDDLEWARE)) as response:
+        with urllib.request.urlopen("%s/token" % (MIDDLEWARE)) as response:
             js = json.load(response)
             self.assertEqual(js["access_token"], ACCESS_TOKEN)

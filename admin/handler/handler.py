@@ -6,7 +6,7 @@ import urllib.request
 import urllib.parse
 
 AUTH_CALLBACK_PATTERN = re.compile("\/auth-callback\?code=(\w+)$")
-AUTH_PERMISSION_PATTERN = re.compile("\/request-authorization$")
+AUTH_PERMISSION_PATTERN = re.compile("\/token$")
 
 
 def create(config, storage):
