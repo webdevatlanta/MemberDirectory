@@ -3,9 +3,8 @@ export function getAuthorization(config) {
     fetch(config.server)
       .then(response => checkResponse(response))
       .then(response => response.json())
-      .catch(error => resolve({error:"auth response is invalid json"}))
       .then(({access_token, redirect}) =>  resolve({access_token, redirect}) )
-      .catch(error => resolve({error}));
+      .catch(err => resolve({error:"failed to get authorization", err}))
   });
 }
 

@@ -21,6 +21,7 @@ export default function({auth, member_masterlist}) {
   useEffect(() => {
     async function getAuthorization(config) {
       const result = await AuthAPI.getAuthorization(config)
+      console.log(result);
       setAuthResult(result)
       if (result.access_token) {
         const directory = await ProfileAPI.fetchDirectory(member_masterlist);
@@ -33,7 +34,7 @@ export default function({auth, member_masterlist}) {
 
   return (
     <Container maxWidth="md">
-      { authResult.access_token ?
+      { authResult.access_token &&
         <div>{members.map( (member, index) => (
           <div key={`${index}`}>
             <span>{member.name}</span>|
@@ -41,15 +42,20 @@ export default function({auth, member_masterlist}) {
                 <span>{member.gist_id}</span>
           </div>))}
         </div>
-        :
-        <span>please authorize using OAuth
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  href={`${authResult.redirect}`}
-                  target="_window">
-                  through GitHub.
-                </Button>
+      }
+      { authResult.error &&
+          <span>
+            The auth middleware is not reachable. Is it running?
+          </span>
+      }
+      { authResult.redirect &&
+        <span>
+          <Button
+            variant="contained"
+            color="secondary"
+            href={`${authResult.redirect}`}>
+            Login Using GitHub
+          </Button>
         </span>
       }
     </Container>
