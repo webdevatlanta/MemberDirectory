@@ -6,30 +6,13 @@ import Card from '@material-ui/core/Card';
 import {makeStyles} from '@material-ui/styles';
 import * as AuthAPI from '../api/AuthAPI';
 import * as ProfileAPI from '../api/ProfileAPI';
+import AdminMemberEditor from './AdminMemberEditor';
 
 function themedStyles(theme) {
   return {
     grid: {
       paddingTop: theme.spacing(4),
       paddingBottom: theme.spacing(1),
-    },
-    card: {
-      width: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      cursor: 'pointer',
-    },
-    activeCard: {
-      width: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      background: 'yellow',
-    },
-    cardMedia: {
-      paddingTop: '56.25%', // 16:9
-    },
-    cardContent: {
-      flexGrow: 1,
     },
   }
 }
@@ -41,7 +24,7 @@ export default function({auth, member_masterlist}) {
 
   const [authResult, setAuthResult] = useState({})
   const [members, setMembers] = useState([])
-  const [edit, setEdit] = useState(false);
+  const [editing, setEditing] = useState(false);
 
   useEffect(() => {
     async function getAuthorization(config) {
@@ -49,7 +32,8 @@ export default function({auth, member_masterlist}) {
       setAuthResult(result)
       if (result.access_token) {
         const directory = await ProfileAPI.fetchDirectory(member_masterlist);
-        setMembers(directory.members);
+        const indexed = directory.members.map( (member, index) => {return {...member, index}} );
+        setMembers(indexed);
       }
     }
 
@@ -57,24 +41,24 @@ export default function({auth, member_masterlist}) {
   }, [auth, member_masterlist])
 
   useEffect(() => {
-    console.log(edit);
-  },[edit])
+    console.log("Now editing:", editing);
+  },[editing])
 
-  function MemberCard({member, active}) {
-    const className = active ? classes.activeCard : classes.card;
-    return (
-      <Card className={className} onClick={ () => setEdit(member) }>
-        <span>{member.name}/{member.github_username}</span>
-        <small>{member.gist_id}</small>
-      </Card>
-    )
+  const handleChange = (member, field) => event => {
+    const index = members.indexOf(member);
+    const newMember = {...member, [field]:event.target.value};
+    const newMembers = [...members];
+    newMembers[index] = newMember;
+    setMembers(newMembers);
   }
 
   return (
     <Container className={classes.grid} maxWidth="md">
       { authResult.access_token &&
-        <Grid container className={classes.grid} spacing={10}>{members.map( (member, index) => (
-          <MemberCard member={member} key={`${index}`} active={member.name === edit.name}/>))}
+        <Grid container className={classes.grid} spacing={10}>
+        { members.map( (member, index) => (
+          <AdminMemberEditor member={member} onMemberEdited={handleChange} editing={member.index === editing} setEditing={setEditing} key={index.toString()}/>
+        ))}
         </Grid>
       }
       { authResult.error &&
