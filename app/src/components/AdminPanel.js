@@ -21,7 +21,6 @@ export default function({auth, member_masterlist}) {
   useEffect(() => {
     async function getAuthorization(config) {
       const result = await AuthAPI.getAuthorization(config)
-      console.log(result);
       setAuthResult(result)
       if (result.access_token) {
         const directory = await ProfileAPI.fetchDirectory(member_masterlist);
