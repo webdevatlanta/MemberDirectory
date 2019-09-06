@@ -17,6 +17,13 @@ function themedStyles(theme) {
       width: '100%',
       display: 'flex',
       flexDirection: 'column',
+      cursor: 'pointer',
+    },
+    activeCard: {
+      width: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      background: 'yellow',
     },
     cardMedia: {
       paddingTop: '56.25%', // 16:9
@@ -34,6 +41,7 @@ export default function({auth, member_masterlist}) {
 
   const [authResult, setAuthResult] = useState({})
   const [members, setMembers] = useState([])
+  const [edit, setEdit] = useState(false);
 
   useEffect(() => {
     async function getAuthorization(config) {
@@ -48,14 +56,25 @@ export default function({auth, member_masterlist}) {
     getAuthorization(auth);
   }, [auth, member_masterlist])
 
+  useEffect(() => {
+    console.log(edit);
+  },[edit])
+
+  function MemberCard({member, active}) {
+    const className = active ? classes.activeCard : classes.card;
+    return (
+      <Card className={className} onClick={ () => setEdit(member) }>
+        <span>{member.name}/{member.github_username}</span>
+        <small>{member.gist_id}</small>
+      </Card>
+    )
+  }
+
   return (
     <Container className={classes.grid} maxWidth="md">
       { authResult.access_token &&
         <Grid container className={classes.grid} spacing={10}>{members.map( (member, index) => (
-          <Card className={classes.card} key={`${index}`}>
-            <span>{member.name}/{member.github_username}</span>
-            <small>{member.gist_id}</small>
-          </Card>))}
+          <MemberCard member={member} key={`${index}`} active={member.name === edit.name}/>))}
         </Grid>
       }
       { authResult.error &&
