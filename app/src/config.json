@@ -2,9 +2,10 @@
   "auth": {
     "server":"http://localhost:3001/token"
   },
-  "member_masterlist": {
+  "member_directory": {
     "gist_server":"https://gist.githubusercontent.com",
     "gist_user":"abrie",
-    "gist_id":"f33af17591e8ab04458cd76b3764f222"
+    "gist_id":"f33af17591e8ab04458cd76b3764f222",
+    "gist_filename":"memberlist.js"
   }
 }

@@ -10,8 +10,8 @@ it('fetches memberlist and gists when building cards', () => {
   fetch.mockResponseOnce(MOCK_FOO_PROFILE);
   fetch.mockResponseOnce(MOCK_BAR_PROFILE);
 
-  const {member_masterlist} = config
-  return CardAPI.buildCards(member_masterlist)
+  const {member_directory} = config
+  return CardAPI.buildCards(member_directory)
     .then( members => expect(members.length).toEqual(MOCK_DIRECTORY.members.length) )
 })
 
@@ -21,7 +21,7 @@ it('returns error if the member directory is unparsable', () => {
   expect.assertions(1);
   const expectedError = "member directory is invalid json";
 
-  return CardAPI.buildCards(config.member_masterlist)
+  return CardAPI.buildCards(config.member_directory)
     .catch(e => expect(e).toEqual(expectedError) );
 })
 

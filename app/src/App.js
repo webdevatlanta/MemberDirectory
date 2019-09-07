@@ -21,8 +21,8 @@ function App(props) {
 
   useEffect(() => {
     async function buildCards(config) {
-      const {member_masterlist} = config;
-      await CardAPI.buildCards(member_masterlist)
+      const {member_directory} = config;
+      await CardAPI.buildCards(member_directory)
         .then(CardAPI.randomizeOrder)
         .then(cards => setCards(cards))
         .catch(error => console.error(error));

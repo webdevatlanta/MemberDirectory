@@ -1,5 +1,5 @@
-export function fetchDirectory({gist_server, gist_user, gist_id}) {
-  const gist_url = `${gist_server}/${gist_user}/${gist_id}/raw/memberlist.js`;
+export function fetchDirectory({gist_server, gist_user, gist_id, gist_filename}) {
+  const gist_url = `${gist_server}/${gist_user}/${gist_id}/raw/${gist_filename}`;
 
   return new Promise((resolve, reject) => {
     fetch(gist_url)

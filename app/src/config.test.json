@@ -2,9 +2,10 @@
   "auth": {
     "server":"http://localhost:3001/token"
   },
-  "member_masterlist": {
-    "gist_server":"https://mock-gist-member_masterlist-server",
-    "gist_user":"mock-gist-member_masterlist-user",
-    "gist_id":"mock-gist-member_masterlist-id"
+  "member_directory": {
+    "gist_server":"https://directory-server",
+    "gist_user":"directory-user",
+    "gist_id":"directory-gistid",
+    "gist_filename":"directory-filename"
   }
 }

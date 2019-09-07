@@ -97,7 +97,7 @@ export default function({cards, config}) {
             variant="contained"
             color="secondary"
             onClick={ () => setMode({admin:false,game:false})}> Quit Admin </Button>
-            <AdminPanel auth={config.auth} member_masterlist={config.member_masterlist}></AdminPanel>
+            <AdminPanel auth={config.auth} memberDirectory={config.member_directory}></AdminPanel>
           </>
         }
 
