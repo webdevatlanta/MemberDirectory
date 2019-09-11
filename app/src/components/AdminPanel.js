@@ -25,17 +25,27 @@ export default function({auth, memberDirectory}) {
   const [members, setMembers] = useState([])
 
   useEffect(() => {
-    async function getAuthorization(config) {
+    async function applyEffect(config) {
       const result = await AuthAPI.getAuthorization(config)
       setAuthResult(result)
-      if (result.access_token) {
+    }
+
+     applyEffect(auth);
+  }, [auth])
+
+  useEffect(() => {
+    async function applyEffect(memberDirectory) {
+      if (authResult.access_token) {
         const directory = await ProfileAPI.fetchDirectory(memberDirectory);
         setMembers(directory.members);
+      } else {
+        setMembers([]);
       }
     }
 
-    getAuthorization(auth);
-  }, [auth, memberDirectory])
+    applyEffect(memberDirectory)
+
+  }, [authResult, memberDirectory])
 
   const onMemberEdited = (original, edited) => {
     const index = members.indexOf(original);
