@@ -1,16 +1,3 @@
-export function fetchDirectory({gist_server, gist_user, gist_id, gist_filename}) {
-  const gist_url = `${gist_server}/${gist_user}/${gist_id}/raw/${gist_filename}`;
-
-  return new Promise((resolve, reject) => {
-    fetch(gist_url)
-      .then(response => checkResponse(response))
-      .then(response => response.json())
-      .catch(error => resolve({error:"member directory is invalid json"}))
-      .then(({members}) =>  resolve({members}) )
-      .catch(error => resolve({error}));
-  });
-}
-
 export function assignGistUrl(m) {
   const gist_server = 'https://gist.githubusercontent.com';
   return {

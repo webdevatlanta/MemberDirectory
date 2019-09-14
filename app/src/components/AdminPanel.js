@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import {makeStyles} from '@material-ui/styles';
 import * as AuthAPI from '../api/AuthAPI';
-import * as ProfileAPI from '../api/ProfileAPI';
+import * as AdminAPI from '../api/AdminAPI';
 import AdminMemberEditor from './AdminMemberEditor';
 
 function themedStyles(theme) {
@@ -18,7 +18,7 @@ function themedStyles(theme) {
 
 const useStyles = makeStyles(themedStyles);
 
-export default function({auth, memberDirectory}) {
+export default function({auth, memberlist}) {
   const classes = useStyles();
 
   const [authResult, setAuthResult] = useState({})
@@ -34,24 +34,30 @@ export default function({auth, memberDirectory}) {
   }, [auth])
 
   useEffect(() => {
-    async function applyEffect(memberDirectory) {
+    async function applyEffect(memberlist) {
       if (authResult.access_token) {
-        const directory = await ProfileAPI.fetchDirectory(memberDirectory);
-        setMembers(directory.members);
+        AdminAPI.get(memberlist)
+          .then(response => JSON.parse(response.content) )
+          .then(({members}) => setMembers(members) )
       } else {
         setMembers([]);
       }
     }
 
-    applyEffect(memberDirectory)
+    applyEffect(memberlist)
 
-  }, [authResult, memberDirectory])
+  }, [authResult, memberlist])
+
 
   const onMemberEdited = (original, edited) => {
     const index = members.indexOf(original);
     const newMembers = [...members]
     newMembers[index] = edited;
     setMembers(newMembers);
+
+    const token = authResult.access_token;
+    AdminAPI.get(memberlist)
+      .then(({sha}) => AdminAPI.put(memberlist, token, sha, JSON.stringify({members})))
   }
 
   return (

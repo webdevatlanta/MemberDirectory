@@ -1,13 +1,14 @@
 import * as ProfileAPI from './ProfileAPI.js';
+import * as AdminAPI from './AdminAPI.js';
 
 export default {
-  async buildCards(directory_cfg) {
-      const directory = await ProfileAPI.fetchDirectory(directory_cfg);
-      if (directory.error) {
-        return Promise.reject(directory.error);
+  async buildCards(memberlist) {
+      const response = await AdminAPI.get(memberlist);
+      if (response.error) {
+        return Promise.reject(response.error);
       }
 
-      const cards = directory.members
+      const cards = JSON.parse(response.content).members
         .map(ProfileAPI.assignGistUrl)
         .map(ProfileAPI.assignGithubUrl)
         .map(ProfileAPI.assignProfile)

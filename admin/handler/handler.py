@@ -20,7 +20,8 @@ def create(config, storage):
                     s.send_header('Access-Control-Allow-Origin', '*')
                     s.end_headers()
                     redirect = config["REQUEST_CODE"] + \
-                        "?client_id=%s" % (config["CLIENT_ID"])
+                        "?client_id=%s&scope=%s" % (
+                            config["CLIENT_ID"], config["SCOPE"])
                     s.wfile.write(json.dumps(
                         {"redirect": redirect}).encode())
                     return

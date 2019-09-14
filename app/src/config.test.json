@@ -2,10 +2,12 @@
   "auth": {
     "server":"http://localhost:3001/token"
   },
-  "member_directory": {
-    "gist_server":"https://directory-server",
-    "gist_user":"directory-user",
-    "gist_id":"directory-gistid",
-    "gist_filename":"directory-filename"
+  "data": {
+    "memberlist": {
+      "repo":"MemberDirectory",
+      "owner":"abrie",
+      "path":"memberlist.test.js",
+      "branch":"data"
+    }
   }
 }

@@ -1,11 +1,13 @@
 {
   "auth": {
-    "server":"http://localhost:3001/token"
+    "server":"http://127.0.0.1:3001/token"
   },
-  "member_directory": {
-    "gist_server":"https://gist.githubusercontent.com",
-    "gist_user":"abrie",
-    "gist_id":"f33af17591e8ab04458cd76b3764f222",
-    "gist_filename":"memberlist.js"
+  "data": {
+    "memberlist": {
+      "repo":"MemberDirectory",
+      "owner":"abrie",
+      "path":"memberlist.js",
+      "branch":"data"
+    }
   }
 }

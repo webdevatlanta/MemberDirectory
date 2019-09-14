@@ -21,6 +21,7 @@ CONFIG = {
     "CLIENT_ID": "client-id-123",
     "CLIENT_SECRET": "client-secret-abc",
     "AUTHORIZATION_GRANTED": "%s" % (CLIENT),
+    "SCOPE": "public_repo",
 }
 
 STORE = storage.new_store()
@@ -77,8 +78,8 @@ class Test(unittest.TestCase):
 
     def test_authorization_request(self):
         with urllib.request.urlopen("%s/token" % (MIDDLEWARE)) as response:
-            redirect_expected = "%s?client_id=%s" % (
-                CONFIG["REQUEST_CODE"], CONFIG["CLIENT_ID"])
+            redirect_expected = "%s?client_id=%s&scope=%s" % (
+                CONFIG["REQUEST_CODE"], CONFIG["CLIENT_ID"], CONFIG["SCOPE"])
             js = json.load(response)
             self.assertEqual(js["redirect"], redirect_expected)
 
