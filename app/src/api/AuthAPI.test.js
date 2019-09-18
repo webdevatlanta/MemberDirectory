@@ -5,6 +5,14 @@ beforeEach(() => {
   fetch.resetMocks();
 });
 
+it('returns error if network request fails.', () => {
+  const expected = new Error("How expected!");
+  fetch.mockReject(expected);
+  return api.getAuthorization(TestConfig.auth).then(response => {
+    expect(response.error).toEqual(expected);
+  });
+})
+
 it('returns error if auth fetch gets malformed json.', () => {
   fetch.mockResponseOnce("badjsonhere");
 
