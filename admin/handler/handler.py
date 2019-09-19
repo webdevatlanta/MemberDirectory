@@ -1,15 +1,34 @@
 import time
 import re
 import json
+import base64
+import os
+import secrets
 from http.server import BaseHTTPRequestHandler
 import urllib.request
 import urllib.parse
 
-AUTH_CALLBACK_PATTERN = re.compile("\/auth-callback\?code=(\w+)$")
+AUTH_CALLBACK_PATTERN = re.compile(
+    "\/auth-callback\?code=(\w+)\&state=(.*)$")
 AUTH_PERMISSION_PATTERN = re.compile("\/token$")
 
 
-def create(config, storage):
+class State:
+    def __init__(self):
+        self.dict = {}
+
+    def current(self):
+        return self.dict["value"]
+
+    def equals(self, value):
+        return self.dict["value"] == value
+
+    def new(self):
+        self.dict["value"] = secrets.token_urlsafe(16)
+        return self.dict["value"]
+
+
+def create(config, storage, state):
     class Handler(BaseHTTPRequestHandler):
         def do_GET(s):
             authPermission = AUTH_PERMISSION_PATTERN.search(s.path)
@@ -19,11 +38,13 @@ def create(config, storage):
                     s.send_header('Content-type', 'application/json')
                     s.send_header('Access-Control-Allow-Origin', '*')
                     s.end_headers()
-                    redirect = config["REQUEST_CODE"] + \
-                        "?client_id=%s&scope=%s" % (
-                            config["CLIENT_ID"], config["SCOPE"])
-                    s.wfile.write(json.dumps(
-                        {"redirect": redirect}).encode())
+                    params = str(urllib.parse.urlencode({
+                        'client_id': config["CLIENT_ID"],
+                        'scope': config["SCOPE"],
+                        'state': state.new()}).encode('ascii'), 'ascii')
+                    response = {"redirect": "%s?%s" %
+                                (config["REQUEST_CODE"], params)}
+                    s.wfile.write(json.dumps(response).encode())
                     return
                 else:
                     s.send_response(200)
@@ -35,6 +56,11 @@ def create(config, storage):
 
             authCallback = AUTH_CALLBACK_PATTERN.search(s.path)
             if authCallback:
+                if not state.equals(authCallback.group(2)):
+                    s.send_response(400)
+                    s.end_headers()
+                    return
+
                 params = urllib.parse.urlencode({
                     'client_id': config["CLIENT_ID"],
                     'client_secret': config["CLIENT_SECRET"],

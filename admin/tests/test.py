@@ -4,6 +4,7 @@ import urllib
 import threading
 import queue
 import json
+import http
 
 from handler import handler
 from storage import storage
@@ -58,8 +59,9 @@ class Test(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.queue = queue.Queue()
+        cls.state = handler.State()
         middleware = HTTPServer(("localhost", 3007),
-                                handler.create(CONFIG, STORE))
+                                handler.create(CONFIG, STORE, cls.state))
         middleware_thread = threading.Thread(target=middleware.serve_forever)
         middleware_thread.setDaemon(True)
         middleware_thread.start()
@@ -76,18 +78,35 @@ class Test(unittest.TestCase):
 
     # GET on http://middleware/token should redirect to Authority's permissions page.
 
-    def test_authorization_request(self):
+    def test_csrf_request(self):
+        STORE.token = None
+        self.__class__.state.new()
         with urllib.request.urlopen("%s/token" % (MIDDLEWARE)) as response:
-            redirect_expected = "%s?client_id=%s&scope=%s" % (
-                CONFIG["REQUEST_CODE"], CONFIG["CLIENT_ID"], CONFIG["SCOPE"])
+            js = json.load(response)
+            expected = "%s?client_id=%s&scope=%s&state=%s" % (
+                CONFIG["REQUEST_CODE"], CONFIG["CLIENT_ID"], CONFIG["SCOPE"], self.__class__.state.current())
+            self.assertEqual(js["redirect"], expected)
+
+        # The Authority replies with a GET of http://middleware/auth-callback.
+
+        with self.assertRaises(urllib.error.HTTPError) as context:
+            urllib.request.urlopen("%s/auth-callback?code=%s&state=%s" %
+                                   (MIDDLEWARE, AUTH_CODE, 'wrong-state-here'))
+        self.assertEqual(context.exception.code, 400)
+
+    def test_authorization_request(self):
+        self.__class__.state.new()
+        with urllib.request.urlopen("%s/token" % (MIDDLEWARE)) as response:
+            redirect_expected = "%s?client_id=%s&scope=%s&state=%s" % (
+                CONFIG["REQUEST_CODE"], CONFIG["CLIENT_ID"], CONFIG["SCOPE"], self.__class__.state.current())
             js = json.load(response)
             self.assertEqual(js["redirect"], redirect_expected)
 
         self.assertEqual(STORE.token, None)
 
-        # The Authority should reply with a GET of http://middleware/auth-callback.
-        urllib.request.urlopen("%s/auth-callback?code=%s" %
-                               (MIDDLEWARE, AUTH_CODE))
+        # The Authority replies with a GET of http://middleware/auth-callback.
+        urllib.request.urlopen("%s/auth-callback?code=%s&state=%s" %
+                               (MIDDLEWARE, AUTH_CODE, self.__class__.state.current()))
 
         # If the reply is positive, Middleware should POST to Authority's token server.
         # The Authority mock records post parameters into a queue:
