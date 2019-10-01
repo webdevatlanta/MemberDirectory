@@ -12,7 +12,7 @@ if __name__ == '__main__':
     HOST = ('localhost', 3001)
     CONFIG = config.load("./secrets/github-oauth.json")
     STORE = storage.new_store()
-    STATE = base64.urlsafe_b64encode(os.urandom(32))
+    STATE = handler.State()
 
     httpd = HTTPServer(HOST, handler.create(CONFIG, STORE, STATE))
     print(time.asctime(), "Server start - %s:%s" % HOST)
