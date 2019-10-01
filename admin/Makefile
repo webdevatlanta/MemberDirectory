@@ -9,4 +9,7 @@ start: venv
 	. venv/bin/activate; python .
 
 test: venv
-	. venv/bin/activate; python -m unittest tests/test.py
+	. venv/bin/activate; python -m pytest
+
+watch: venv
+	. venv/bin/activate; python -m pytest_watch
