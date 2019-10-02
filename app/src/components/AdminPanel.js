@@ -58,11 +58,12 @@ export default function({auth, memberlist}) {
     const index = members.indexOf(original);
     const newMembers = [...members]
     newMembers[index] = edited;
-    setMembers(newMembers);
 
     const token = authResult.access_token;
+    const newContents = JSON.stringify({members:newMembers});
     AdminAPI.get(memberlist)
-      .then(({sha}) => AdminAPI.put(memberlist, token, sha, JSON.stringify({members})))
+      .then(({sha}) => AdminAPI.put(memberlist, token, sha, newContents))
+      .then((result) => setMembers(newMembers))
   }
 
   return (
