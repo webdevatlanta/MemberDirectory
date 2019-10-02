@@ -15,7 +15,7 @@ if __name__ == '__main__':
     STATE = handler.State()
 
     httpd = HTTPServer(HOST, handler.create(CONFIG, STORE, STATE))
-    print(time.asctime(), "Server start - %s:%s" % HOST)
+    print(time.asctime(), "OAuth Token Server started on %s:%s" % HOST)
 
     try:
         httpd.serve_forever()
