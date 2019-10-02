@@ -18,7 +18,7 @@ function themedStyles(theme) {
 
 const useStyles = makeStyles(themedStyles);
 
-export default function({member, onMemberEdited}) {
+export default function({member, onMemberEdited, onMemberRemoved}) {
   const classes = useStyles();
 
   const [editing, setEditing] = useState(false);
@@ -39,6 +39,11 @@ export default function({member, onMemberEdited}) {
     setChanged(member);
   }
 
+  const removeMember = () => {
+    setEditing(false);
+    onMemberRemoved(member);
+  }
+
   if (editing) {
     return (
       <TableRow>
@@ -54,6 +59,7 @@ export default function({member, onMemberEdited}) {
         <TableCell>
             <Button variant="contained" color="primary" className={classes.saveButton} onClick={saveChange}>save</Button>
             <Button variant="contained" color="primary" className={classes.cancelButton} onClick={cancelChange}>cancel</Button>
+            <Button variant="contained" color="primary" className={classes.removeButton} onClick={removeMember}>remove</Button>
         </TableCell>
       </TableRow>
     )

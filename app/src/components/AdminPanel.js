@@ -76,6 +76,15 @@ export default function({auth, memberlist}) {
       .then((result) => setMembers(newMembers))
   }
 
+  const onMemberRemoved = (member) => {
+    const newMembers = members.filter( (m) => m !== member );
+    const token = authResult.access_token;
+    const newContents = JSON.stringify({members:newMembers});
+    AdminAPI.get(memberlist)
+      .then(({sha}) => AdminAPI.put(memberlist, token, sha, newContents))
+      .then((result) => setMembers(newMembers))
+  }
+
   return (
     <Container className={classes.grid} maxWidth="md">
       { authResult.access_token &&
@@ -89,7 +98,7 @@ export default function({auth, memberlist}) {
             </TableRow>
           </TableHead>
           <TableBody>
-          { members.map( (member, index) => ( <AdminMemberEditor member={member} onMemberEdited={onMemberEdited} key={index.toString()}/>))}
+          { members.map( (member, index) => ( <AdminMemberEditor member={member} onMemberEdited={onMemberEdited} onMemberRemoved={onMemberRemoved} key={index.toString()}/>))}
             <AdminMemberCreator onMemberCreated={onMemberCreated} key={-1}/>
           </TableBody>
         </Table>
