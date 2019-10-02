@@ -24,8 +24,8 @@ export default function({cards, config}) {
 
   return (
     <>
-      <TopAppBar mode={mode} setMode={setMode}/>
       <CssBaseline />
+      <TopAppBar mode={mode} setMode={setMode}/>
       <main>
         {
           mode.game && <GamePanel cards={cards} />
