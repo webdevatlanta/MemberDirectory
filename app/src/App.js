@@ -20,13 +20,13 @@ function App(props) {
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
-    async function buildCards(memberlist) {
+    async function effect(memberlist) {
       await CardAPI.buildCards(memberlist)
         .then(CardAPI.randomizeOrder)
         .then(cards => setCards(cards))
         .catch(error => console.error(error));
     }
-    buildCards(props.config.data.memberlist);
+    effect(props.config.data.memberlist);
   }, [props.config]);
 
   return (
