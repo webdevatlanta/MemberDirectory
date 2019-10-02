@@ -3,7 +3,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/styles';
 import TopAppBar from './TopAppBar';
-import CardGame from './CardGame';
+import GamePanel from './GamePanel';
 import AdminPanel from './AdminPanel';
 import HeroPanel from './HeroPanel';
 
@@ -28,15 +28,15 @@ export default function({cards, config}) {
       <CssBaseline />
       <main>
         {
-          mode.game && <CardGame cards={cards} ></CardGame>
+          mode.game && <GamePanel cards={cards} />
         }
 
         {
-          mode.admin && <AdminPanel auth={config.auth} memberlist={config.data.memberlist}></AdminPanel>
+          mode.admin && <AdminPanel auth={config.auth} memberlist={config.data.memberlist}/>
         }
 
         {
-          (!mode.admin && !mode.game) && <HeroPanel cards={cards}></HeroPanel>
+          (!mode.admin && !mode.game) && <HeroPanel cards={cards}/>
         }
       </main>
 
