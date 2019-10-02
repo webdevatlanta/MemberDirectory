@@ -6,7 +6,7 @@ venv/bin/activate: requirements.txt
 	touch venv/bin/activate
 
 start: venv
-	. venv/bin/activate; python .
+	@. venv/bin/activate; python .
 
 test: venv
 	. venv/bin/activate; python -m pytest
