@@ -10,6 +10,7 @@ import {makeStyles} from '@material-ui/styles';
 import * as AuthAPI from '../api/AuthAPI';
 import * as AdminAPI from '../api/AdminAPI';
 import AdminMemberEditor from './AdminMemberEditor';
+import AdminMemberCreator from './AdminMemberCreator';
 
 function themedStyles(theme) {
   return {
@@ -66,6 +67,15 @@ export default function({auth, memberlist}) {
       .then((result) => setMembers(newMembers))
   }
 
+  const onMemberCreated = (member) => {
+    const newMembers = [...members, member];
+    const token = authResult.access_token;
+    const newContents = JSON.stringify({members:newMembers});
+    AdminAPI.get(memberlist)
+      .then(({sha}) => AdminAPI.put(memberlist, token, sha, newContents))
+      .then((result) => setMembers(newMembers))
+  }
+
   return (
     <Container className={classes.grid} maxWidth="md">
       { authResult.access_token &&
@@ -79,9 +89,8 @@ export default function({auth, memberlist}) {
             </TableRow>
           </TableHead>
           <TableBody>
-          { members.map( (member, index) => (
-            <AdminMemberEditor member={member} onMemberEdited={onMemberEdited} key={index.toString()}/>
-          ))}
+          { members.map( (member, index) => ( <AdminMemberEditor member={member} onMemberEdited={onMemberEdited} key={index.toString()}/>))}
+            <AdminMemberCreator onMemberCreated={onMemberCreated} key={-1}/>
           </TableBody>
         </Table>
       }
