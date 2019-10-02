@@ -8,12 +8,6 @@ import {makeStyles} from '@material-ui/styles';
 
 function themedStyles(theme) {
   return {
-    card: {
-      width: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      cursor: 'pointer',
-    },
     activeCard: {
       width: '100%',
       display: 'flex',
