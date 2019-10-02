@@ -38,9 +38,19 @@ export default function({cards, config}) {
 
   return (
     <>
-      <TopAppBar />
+      <TopAppBar mode={mode} setMode={setMode}/>
       <CssBaseline />
       <main>
+        {
+          mode.game && <CardGame cards={cards} ></CardGame>
+        }
+
+        {
+          mode.admin && <AdminPanel auth={config.auth} memberlist={config.data.memberlist}></AdminPanel>
+        }
+
+        {
+          (!mode.admin && !mode.game) && <>
         {/* Hero unit */}
         <div className={classes.heroContent}>
           <Container maxWidth="sm">
@@ -79,41 +89,10 @@ export default function({cards, config}) {
               </Grid>
             </div>
           </Container>
-        </div>{' '}
-        {/* End hero unit */}
-        {
-          mode.game && <>
-            <Button
-            variant="contained"
-            color="secondary"
-            onClick={ () => setMode({admin:false,game:false})}> Quit Game </Button>
-            <CardGame cards={cards} ></CardGame>
-          </>
-        }
-
-        {
-          mode.admin && <>
-            <Button
-            variant="contained"
-            color="secondary"
-            onClick={ () => setMode({admin:false,game:false})}> Quit Admin </Button>
-            <AdminPanel auth={config.auth} memberlist={config.data.memberlist}></AdminPanel>
-          </>
-        }
-
-        {
-          (!mode.admin && !mode.game) && <>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={ () => setMode({admin:false,game:true})}> Play Game </Button>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={ () => setMode({admin:true,game:false})}> Administrate </Button>
-            <CardGrid cards={cards}></CardGrid>
-          </>
-        }
+        </div>{' '} {/* End hero unit */}
+        <CardGrid cards={cards}></CardGrid>
+        </>
+      }
       </main>
       {/* Footer */}
       <footer className={classes.footer}>
