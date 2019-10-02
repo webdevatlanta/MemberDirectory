@@ -1,7 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 import {makeStyles} from '@material-ui/styles';
 import * as AuthAPI from '../api/AuthAPI';
 import * as AdminAPI from '../api/AdminAPI';
@@ -34,17 +38,18 @@ export default function({auth, memberlist}) {
   }, [auth])
 
   useEffect(() => {
-    async function applyEffect(memberlist) {
+    async function effect(memberlist) {
       if (authResult.access_token) {
         AdminAPI.get(memberlist)
           .then(response => JSON.parse(response.content) )
           .then(({members}) => setMembers(members) )
+          .catch(err => console.log("Error:", err))
       } else {
         setMembers([]);
       }
     }
 
-    applyEffect(memberlist)
+    effect(memberlist)
 
   }, [authResult, memberlist])
 
@@ -63,11 +68,21 @@ export default function({auth, memberlist}) {
   return (
     <Container className={classes.grid} maxWidth="md">
       { authResult.access_token &&
-        <Grid container className={classes.grid} spacing={10}>
-        { members.map( (member, index) => (
-          <AdminMemberEditor member={member} onMemberEdited={onMemberEdited} key={index.toString()}/>
-        ))}
-        </Grid>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Github Username</TableCell>
+              <TableCell>Profile Gist ID</TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+          { members.map( (member, index) => (
+            <AdminMemberEditor member={member} onMemberEdited={onMemberEdited} key={index.toString()}/>
+          ))}
+          </TableBody>
+        </Table>
       }
       { authResult.error &&
           <span>
