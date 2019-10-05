@@ -20,20 +20,19 @@ function App(props) {
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
-    async function buildCards(config) {
-      const {member_masterlist} = config;
-      await CardAPI.buildCards(member_masterlist)
+    async function effect(memberlist) {
+      await CardAPI.buildCards(memberlist)
         .then(CardAPI.randomizeOrder)
         .then(cards => setCards(cards))
         .catch(error => console.error(error));
     }
-    buildCards(props.config);
+    effect(props.config.data.memberlist);
   }, [props.config]);
 
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
-        <Layout cards={cards} />
+        <Layout cards={cards} config={props.config} />
       </ThemeProvider>
     </div>
   );

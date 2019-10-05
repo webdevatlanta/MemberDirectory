@@ -1,7 +1,7 @@
 import * as api from './ProfileAPI.js';
 import TestConfig from '../config.test.json';
 
-afterEach(() => {
+beforeEach(() => {
   fetch.resetMocks();
 });
 
@@ -86,35 +86,5 @@ it('returns error for failed gist fetch', () => {
 
   return api.assignProfile(m).then(m_out => {
     expect(m_out.error).toEqual(expected);
-  });
-});
-
-it('fetches memberlist', () => {
-  fetch.mockResponseOnce(JSON.stringify(MOCK_DIRECTORY));
-
-  return api.fetchDirectory(TestConfig).then(directory => {
-    expect(fetch.mock.calls.length).toEqual(1);
-    expect(directory.members.length).toEqual(
-      MOCK_DIRECTORY.members.length,
-    );
-  });
-});
-
-it('returns error if memberlist fetch fails', () => {
-  const expectedError = 'member directory is invalid json';
-  fetch.mockReject(expectedError);
-
-  return api.fetchDirectory(TestConfig).then(response => {
-    expect(fetch.mock.calls.length).toEqual(1);
-    expect(response.error).toEqual(expectedError);
-  });
-});
-
-it('returns error for unparseable memberlist json', () => {
-  fetch.mockResponseOnce(`{"this comma->","is bad."}`);
-
-  return api.fetchDirectory(TestConfig).then(response => {
-    expect(fetch.mock.calls.length).toEqual(1);
-    expect(response.error).toBeTruthy();
   });
 });

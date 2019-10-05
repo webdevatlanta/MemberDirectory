@@ -1,10 +1,9 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+import AppMenu from './AppMenu'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -18,21 +17,32 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function TopAppBar() {
+export default function TopAppBar({mode, setMode}) {
   const classes = useStyles();
-  const [drawerOpen, setDrawerOpen] = React.useState(false);
-  const toggleDrawer = () => setDrawerOpen(!drawerOpen);
+
+  const [title, setTitle] = useState("")
+
+  useEffect( () => {
+    if (mode.admin) {
+      setTitle("WebDevAtlanta: Admin Panel")
+      return
+    }
+
+    if (mode.game) {
+      setTitle("WebDevAtlanta: Let's play a game")
+      return
+    }
+
+    setTitle("We welcome all!")
+  }, [mode])
 
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={() => { toggleDrawer() }}>
-            {/* Need to implement drawer to work with above onClick */}
-            <MenuIcon />
-          </IconButton>
+          <AppMenu mode={mode} setMode={setMode}/>
           <Typography variant="h6" className={classes.title}>
-            We welcome all!
+            {title}
           </Typography>
         </Toolbar>
       </AppBar>
