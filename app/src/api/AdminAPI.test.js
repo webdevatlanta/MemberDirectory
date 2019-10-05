@@ -7,6 +7,29 @@ beforeEach(() => {
 
 const expected_agent = "WebDevAtlanta GitHub API Interface/1.0"
 
+it('Get throws an error if network request fails', () => {
+  const expectedError = "an expected error";
+  fetch.mockReject(new Error(expectedError));
+  return api.get("url-to-resource").catch(response => {
+    expect(response.message).toEqual(expectedError);
+  });
+})
+
+it('Get throws an error if the response is invalid JSON', () => {
+  fetch.mockResponseOnce("this-is-not-json");
+  return api.get("url-to-resource").catch(error => {
+    expect(error.type).toEqual('invalid-json')
+  });
+});
+
+it('Get throws an error if the response status code is not ok.', () => {
+  fetch.mockResponseOnce(JSON.stringify({}), {status:401});
+
+  return api.get("url-to-resource").catch(error => {
+    expect(error.message).toEqual("401 Unauthorized")
+  });
+});
+
 it('Makes well formed GET request for memberlist', () => {
   const expectedContents = {
     members:[]
@@ -56,6 +79,5 @@ it('Makes a well formed PUT request for memberlist', () => {
     expect(body.sha).toEqual(sha);
     expect(body.content).toEqual(btoa(content));
     expect(body.branch).toEqual(branch);
-
   })
 })
