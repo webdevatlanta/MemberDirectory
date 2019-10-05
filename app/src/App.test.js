@@ -7,7 +7,12 @@ import Config from './config.test.json';
 it('renders without crashing', async () => {
   fetch.resetMocks();
 
-  fetch.mockResponseOnce( JSON.stringify(MOCK_DIRECTORY) );
+  const mockResponse = {
+    "sha":"abc123",
+    "content":btoa(JSON.stringify(MOCK_DIRECTORY))
+  }
+
+  fetch.mockResponseOnce(JSON.stringify(mockResponse));
   fetch.mockResponseOnce( JSON.stringify(MOCK_FOO_PROFILE) );
   fetch.mockResponseOnce( JSON.stringify(MOCK_BAR_PROFILE) );
 

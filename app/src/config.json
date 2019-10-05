@@ -1,7 +1,13 @@
 {
-  "member_masterlist": {
-    "gist_server":"https://gist.githubusercontent.com",
-    "gist_user":"abrie",
-    "gist_id":"f33af17591e8ab04458cd76b3764f222"
+  "auth": {
+    "server":"http://127.0.0.1:3001/token"
+  },
+  "data": {
+    "memberlist": {
+      "repo":"MemberDirectory",
+      "owner":"abrie",
+      "path":"memberlist.js",
+      "branch":"data"
+    }
   }
 }

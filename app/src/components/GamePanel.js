@@ -10,7 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import {withStyles} from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 
-class CardGrid extends Component {
+class GamePanel extends Component {
   constructor(props) {
     super(props);
     let namesArray = [];
@@ -178,4 +178,4 @@ const styles = theme => ({
   },
 });
 
-export default withStyles(styles)(CardGrid);
+export default withStyles(styles)(GamePanel);
