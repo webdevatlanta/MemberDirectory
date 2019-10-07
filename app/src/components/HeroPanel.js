@@ -85,12 +85,8 @@ export default function({config}) {
         error &&
           <>
             <hr></hr>
-            <div>
-              Failed to load the member list.
-            </div>
-            <div>
-              {error.message}
-            </div>
+            <div> Failed to load the member list. </div>
+            <div> {error.message} </div>
             <hr></hr>
           </>
       }
