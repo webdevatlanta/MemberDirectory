@@ -26,15 +26,18 @@ export default function({config}) {
   const classes = useStyles();
 
   const [cards, setCards] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     async function effect(memberlist) {
       await CardAPI.buildCards(memberlist)
         .then(CardAPI.randomizeOrder)
         .then(cards => setCards(cards))
-        .catch(error => console.error(error));
+        .catch(error => setError(error));
     }
+
     effect(config.data.memberlist);
+
   }, [config]);
 
   return (
@@ -77,7 +80,25 @@ export default function({config}) {
           </div>
         </Container>
       </div>{' '} {/* End hero unit */}
-      <CardGrid cards={cards}></CardGrid>
+
+      {
+        error &&
+          <>
+            <hr></hr>
+            <div>
+              Failed to load the member list.
+            </div>
+            <div>
+              {error.message}
+            </div>
+            <hr></hr>
+          </>
+      }
+
+      {
+        cards.length > 0 &&
+          <CardGrid cards={cards}></CardGrid>
+      }
     </>
   );
 }
