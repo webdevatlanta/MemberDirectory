@@ -26,13 +26,13 @@ const useStyles = makeStyles(themedStyles);
 export default function({config}) {
   const classes = useStyles();
 
-  const [authResult, setAuthResult] = useState({})
+  const [auth, setAuth] = useState({})
   const [members, setMembers] = useState([])
 
   useEffect(() => {
     async function applyEffect(config) {
       const result = await AuthAPI.getAuthorization(config)
-      setAuthResult(result)
+      setAuth(result)
     }
 
      applyEffect(config.auth);
@@ -40,7 +40,7 @@ export default function({config}) {
 
   useEffect(() => {
     async function effect(memberlist) {
-      if (authResult.access_token) {
+      if (auth.access_token) {
         AdminAPI.get(memberlist)
           .then(response => JSON.parse(response.content) )
           .then(({members}) => setMembers(members) )
@@ -52,7 +52,7 @@ export default function({config}) {
 
     effect(config.data.memberlist)
 
-  }, [authResult, config.data.memberlist])
+  }, [auth, config.data.memberlist])
 
 
   const onMemberEdited = (original, edited) => {
@@ -60,7 +60,7 @@ export default function({config}) {
     const newMembers = [...members]
     newMembers[index] = edited;
 
-    const token = authResult.access_token;
+    const token = auth.access_token;
     const newContents = JSON.stringify({members:newMembers});
     AdminAPI.get(config.data.memberlist)
       .then(({sha}) => AdminAPI.put(config.data.memberlist, token, sha, newContents))
@@ -69,7 +69,7 @@ export default function({config}) {
 
   const onMemberCreated = (member) => {
     const newMembers = [...members, member];
-    const token = authResult.access_token;
+    const token = auth.access_token;
     const newContents = JSON.stringify({members:newMembers});
     AdminAPI.get(config.data.memberlist)
       .then(({sha}) => AdminAPI.put(config.data.memberlist, token, sha, newContents))
@@ -78,7 +78,7 @@ export default function({config}) {
 
   const onMemberRemoved = (member) => {
     const newMembers = members.filter( (m) => m !== member );
-    const token = authResult.access_token;
+    const token = auth.access_token;
     const newContents = JSON.stringify({members:newMembers});
     AdminAPI.get(config.data.memberlist)
       .then(({sha}) => AdminAPI.put(config.data.memberlist, token, sha, newContents))
@@ -87,7 +87,7 @@ export default function({config}) {
 
   return (
     <Container className={classes.grid} maxWidth="md">
-      { authResult.access_token &&
+      { auth.access_token &&
         <Table>
           <TableHead>
             <TableRow>
@@ -103,17 +103,17 @@ export default function({config}) {
           </TableBody>
         </Table>
       }
-      { authResult.error &&
+      { auth.error &&
           <span>
             The auth middleware is not reachable. Is it running?
           </span>
       }
-      { authResult.redirect &&
+      { auth.redirect &&
         <span>
           <Button
             variant="contained"
             color="secondary"
-            href={`${authResult.redirect}`}>
+            href={`${auth.redirect}`}>
             Login Using GitHub
           </Button>
         </span>
