@@ -48,7 +48,7 @@ it('renders without crashing', async () => {
   await act(async () => {
     ReactDOM.render(
       <ThemeProvider theme={theme}>
-        <AdminPanel memberlist={Config.data.memberlist} auth={Config.auth} />
+        <AdminPanel config={Config}/>
       </ThemeProvider>, div);
   });
   expect(fetch.mock.calls.length).toEqual(2);

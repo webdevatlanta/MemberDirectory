@@ -32,7 +32,7 @@ export default function({config}) {
         }
 
         {
-          mode.admin && <AdminPanel auth={config.auth} memberlist={config.data.memberlist}/>
+          mode.admin && <AdminPanel config={config}/>
         }
 
         {

@@ -23,7 +23,7 @@ function themedStyles(theme) {
 
 const useStyles = makeStyles(themedStyles);
 
-export default function({auth, memberlist}) {
+export default function({config}) {
   const classes = useStyles();
 
   const [authResult, setAuthResult] = useState({})
@@ -35,8 +35,8 @@ export default function({auth, memberlist}) {
       setAuthResult(result)
     }
 
-     applyEffect(auth);
-  }, [auth])
+     applyEffect(config.auth);
+  }, [config.auth])
 
   useEffect(() => {
     async function effect(memberlist) {
@@ -50,9 +50,9 @@ export default function({auth, memberlist}) {
       }
     }
 
-    effect(memberlist)
+    effect(config.data.memberlist)
 
-  }, [authResult, memberlist])
+  }, [authResult, config.data.memberlist])
 
 
   const onMemberEdited = (original, edited) => {
@@ -62,8 +62,8 @@ export default function({auth, memberlist}) {
 
     const token = authResult.access_token;
     const newContents = JSON.stringify({members:newMembers});
-    AdminAPI.get(memberlist)
-      .then(({sha}) => AdminAPI.put(memberlist, token, sha, newContents))
+    AdminAPI.get(config.data.memberlist)
+      .then(({sha}) => AdminAPI.put(config.data.memberlist, token, sha, newContents))
       .then((result) => setMembers(newMembers))
   }
 
@@ -71,8 +71,8 @@ export default function({auth, memberlist}) {
     const newMembers = [...members, member];
     const token = authResult.access_token;
     const newContents = JSON.stringify({members:newMembers});
-    AdminAPI.get(memberlist)
-      .then(({sha}) => AdminAPI.put(memberlist, token, sha, newContents))
+    AdminAPI.get(config.data.memberlist)
+      .then(({sha}) => AdminAPI.put(config.data.memberlist, token, sha, newContents))
       .then((result) => setMembers(newMembers))
   }
 
@@ -80,8 +80,8 @@ export default function({auth, memberlist}) {
     const newMembers = members.filter( (m) => m !== member );
     const token = authResult.access_token;
     const newContents = JSON.stringify({members:newMembers});
-    AdminAPI.get(memberlist)
-      .then(({sha}) => AdminAPI.put(memberlist, token, sha, newContents))
+    AdminAPI.get(config.data.memberlist)
+      .then(({sha}) => AdminAPI.put(config.data.memberlist, token, sha, newContents))
       .then((result) => setMembers(newMembers))
   }
 
