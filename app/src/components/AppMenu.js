@@ -25,24 +25,23 @@ export default function({mode, setMode}) {
   }
 
   const handleAdministrate = () => {
-    setMode({admin:true,game:false})
+    setMode("admin");
     setAnchorEl(null);
   };
 
   const handleGame = () => {
-    setMode({admin:false,game:true})
+    setMode("game");
     setAnchorEl(null);
   };
 
-  const handleSplash = () => {
-    setMode({admin:false,game:false})
+  const handleHero = () => {
+    setMode("hero");
     setAnchorEl(null);
   };
 
   return (
     <>
       <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={handleClick}>
-        {/* Need to implement drawer to work with above onClick */}
         <MenuIcon />
       </IconButton>
       <Menu
@@ -52,7 +51,7 @@ export default function({mode, setMode}) {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleSplash}>Splash</MenuItem>
+        <MenuItem onClick={handleHero}>Hero</MenuItem>
         <MenuItem onClick={handleAdministrate}>Administrate</MenuItem>
         <MenuItem onClick={handleGame}>Game</MenuItem>
       </Menu>

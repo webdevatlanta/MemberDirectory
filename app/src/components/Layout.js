@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/styles';
@@ -16,28 +16,37 @@ function themedStyles(theme) {
   };
 }
 
+function getModeFromUrlHash() {
+  const hash = window.location.hash.split("#")[1];
+  return hash ? hash : "hero";
+}
+
 const useStyles = makeStyles(themedStyles);
 
 export default function({config}) {
   const classes = useStyles();
-  const [mode, setMode] = useState({admin:false,game:false});
+  const [mode, setMode] = useState( () => getModeFromUrlHash() );
+
+  const getPanel = (mode, config) => {
+    switch(mode) {
+      case "game": return <GamePanel config={config}/>;
+      case "admin": return <AdminPanel config={config}/>;
+      default: return <HeroPanel config={config}/>;
+    }
+  }
+
+  useEffect( () => {
+    window.location.hash = `${mode}`;
+  }, [mode])
 
   return (
     <>
       <CssBaseline />
+
       <TopAppBar mode={mode} setMode={setMode}/>
+
       <main>
-        {
-          mode.game && <GamePanel config={config} />
-        }
-
-        {
-          mode.admin && <AdminPanel config={config}/>
-        }
-
-        {
-          (!mode.admin && !mode.game) && <HeroPanel config={config}/>
-        }
+        { getPanel(mode, config) }
       </main>
 
       <footer className={classes.footer}>
