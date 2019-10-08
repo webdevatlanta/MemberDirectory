@@ -23,17 +23,11 @@ export default function TopAppBar({mode, setMode}) {
   const [title, setTitle] = useState("")
 
   useEffect( () => {
-    if (mode.admin) {
-      setTitle("WebDevAtlanta: Admin Panel")
-      return
+    switch(mode) {
+      case "game": return setTitle("WebDevAtlanta: Let's play a game");
+      case "admin": return setTitle("WebDevAtlanta: Admin Panel");
+      default: return setTitle("We welcome all!");
     }
-
-    if (mode.game) {
-      setTitle("WebDevAtlanta: Let's play a game")
-      return
-    }
-
-    setTitle("We welcome all!")
   }, [mode])
 
   return (
