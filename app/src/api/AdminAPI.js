@@ -7,15 +7,10 @@ export function put(config, token, sha, content) {
   const body = buildBody({content, sha, branch});
   const request = new Request(url, {method, headers, body, agent, mode:'cors'});
 
-  return new Promise((resolve, reject) => {
-    fetch(request)
-      .then(response => checkResponse(response))
-      .catch(err => resolve({error:`${err}`}))
-      .then(response => response.json())
-      .catch(err => resolve({error:"API response to PUT is not json."}))
-      .then(response =>  resolve({response}))
-      .catch(err => resolve({error:"API PUT request failed.", err}))
-  });
+  return fetch(request)
+    .then(response => checkResponse(response))
+    .then(response => response.json())
+    .then(response => Object.assign({response}))
 }
 
 export function get(config) {
@@ -25,15 +20,10 @@ export function get(config) {
   const params = buildGetParams(config);
   const request = new Request(`${url}?${params}`, {method, agent});
 
-  return new Promise((resolve, reject) => {
-    fetch(request)
-      .then(response => checkResponse(response))
-      .catch(err => resolve({error:`${err}`}))
-      .then(response => response.json())
-      .catch(err => resolve({error:"member directory is invalid json"}))
-      .then(({sha, content}) =>  resolve({sha, content:atob(content)}))
-      .catch(err => resolve({error:"Error from GET request to API endpoint", err}))
-  });
+  return fetch(request)
+    .then(response => checkResponse(response))
+    .then(response => response.json())
+    .then(({sha, content}) => Object.assign({sha, content:atob(content)}))
 }
 
 function buildGithubAPIUrl(config) {
@@ -67,6 +57,6 @@ function checkResponse(response) {
   if (response.ok) {
     return response;
   } else {
-    throw new Error(`${response.status} ${response.statusText}`);
+    throw Error(`${response.status} ${response.statusText}`);
   }
 }

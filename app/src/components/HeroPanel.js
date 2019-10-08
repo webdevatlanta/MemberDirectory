@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -6,6 +6,7 @@ import {makeStyles} from '@material-ui/styles';
 import Container from '@material-ui/core/Container';
 import WebDevAtlantaLogo from '../assets/images/WDA-logo.png';
 import CardGrid from './CardGrid';
+import CardAPI from '../api/CardAPI';
 
 function themedStyles(theme) {
   return {
@@ -21,8 +22,23 @@ function themedStyles(theme) {
 
 const useStyles = makeStyles(themedStyles);
 
-export default function({cards}) {
+export default function({config}) {
   const classes = useStyles();
+
+  const [cards, setCards] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function effect(memberlist) {
+      await CardAPI.buildCards(memberlist)
+        .then(CardAPI.randomizeOrder)
+        .then(cards => setCards(cards))
+        .catch(error => setError(error));
+    }
+
+    effect(config.data.memberlist);
+
+  }, [config]);
 
   return (
     <>
@@ -64,7 +80,21 @@ export default function({cards}) {
           </div>
         </Container>
       </div>{' '} {/* End hero unit */}
-      <CardGrid cards={cards}></CardGrid>
+
+      {
+        error &&
+          <>
+            <hr></hr>
+            <div> Failed to load the member list. </div>
+            <div> {error.message} </div>
+            <hr></hr>
+          </>
+      }
+
+      {
+        cards.length > 0 &&
+          <CardGrid cards={cards}></CardGrid>
+      }
     </>
   );
 }

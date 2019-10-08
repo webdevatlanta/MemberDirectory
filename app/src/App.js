@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import './App.css';
+import React from 'react';
 import Layout from './components/Layout';
 import {createMuiTheme} from '@material-ui/core/styles';
 import {ThemeProvider} from '@material-ui/styles';
-import CardAPI from './api/CardAPI';
+import './App.css';
 
 const theme = createMuiTheme({
   palette: {
@@ -17,22 +16,10 @@ const theme = createMuiTheme({
 });
 
 function App(props) {
-  const [cards, setCards] = useState([]);
-
-  useEffect(() => {
-    async function effect(memberlist) {
-      await CardAPI.buildCards(memberlist)
-        .then(CardAPI.randomizeOrder)
-        .then(cards => setCards(cards))
-        .catch(error => console.error(error));
-    }
-    effect(props.config.data.memberlist);
-  }, [props.config]);
-
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
-        <Layout cards={cards} config={props.config} />
+        <Layout config={props.config} />
       </ThemeProvider>
     </div>
   );

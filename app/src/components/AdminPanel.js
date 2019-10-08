@@ -23,24 +23,24 @@ function themedStyles(theme) {
 
 const useStyles = makeStyles(themedStyles);
 
-export default function({auth, memberlist}) {
+export default function({config}) {
   const classes = useStyles();
 
-  const [authResult, setAuthResult] = useState({})
+  const [auth, setAuth] = useState({})
   const [members, setMembers] = useState([])
 
   useEffect(() => {
     async function applyEffect(config) {
       const result = await AuthAPI.getAuthorization(config)
-      setAuthResult(result)
+      setAuth(result)
     }
 
-     applyEffect(auth);
-  }, [auth])
+     applyEffect(config.auth);
+  }, [config.auth])
 
   useEffect(() => {
     async function effect(memberlist) {
-      if (authResult.access_token) {
+      if (auth.access_token) {
         AdminAPI.get(memberlist)
           .then(response => JSON.parse(response.content) )
           .then(({members}) => setMembers(members) )
@@ -50,9 +50,9 @@ export default function({auth, memberlist}) {
       }
     }
 
-    effect(memberlist)
+    effect(config.data.memberlist)
 
-  }, [authResult, memberlist])
+  }, [auth, config.data.memberlist])
 
 
   const onMemberEdited = (original, edited) => {
@@ -60,34 +60,34 @@ export default function({auth, memberlist}) {
     const newMembers = [...members]
     newMembers[index] = edited;
 
-    const token = authResult.access_token;
+    const token = auth.access_token;
     const newContents = JSON.stringify({members:newMembers});
-    AdminAPI.get(memberlist)
-      .then(({sha}) => AdminAPI.put(memberlist, token, sha, newContents))
+    AdminAPI.get(config.data.memberlist)
+      .then(({sha}) => AdminAPI.put(config.data.memberlist, token, sha, newContents))
       .then((result) => setMembers(newMembers))
   }
 
   const onMemberCreated = (member) => {
     const newMembers = [...members, member];
-    const token = authResult.access_token;
+    const token = auth.access_token;
     const newContents = JSON.stringify({members:newMembers});
-    AdminAPI.get(memberlist)
-      .then(({sha}) => AdminAPI.put(memberlist, token, sha, newContents))
+    AdminAPI.get(config.data.memberlist)
+      .then(({sha}) => AdminAPI.put(config.data.memberlist, token, sha, newContents))
       .then((result) => setMembers(newMembers))
   }
 
   const onMemberRemoved = (member) => {
     const newMembers = members.filter( (m) => m !== member );
-    const token = authResult.access_token;
+    const token = auth.access_token;
     const newContents = JSON.stringify({members:newMembers});
-    AdminAPI.get(memberlist)
-      .then(({sha}) => AdminAPI.put(memberlist, token, sha, newContents))
+    AdminAPI.get(config.data.memberlist)
+      .then(({sha}) => AdminAPI.put(config.data.memberlist, token, sha, newContents))
       .then((result) => setMembers(newMembers))
   }
 
   return (
     <Container className={classes.grid} maxWidth="md">
-      { authResult.access_token &&
+      { auth.access_token &&
         <Table>
           <TableHead>
             <TableRow>
@@ -103,17 +103,17 @@ export default function({auth, memberlist}) {
           </TableBody>
         </Table>
       }
-      { authResult.error &&
+      { auth.error &&
           <span>
             The auth middleware is not reachable. Is it running?
           </span>
       }
-      { authResult.redirect &&
+      { auth.redirect &&
         <span>
           <Button
             variant="contained"
             color="secondary"
-            href={`${authResult.redirect}`}>
+            href={`${auth.redirect}`}>
             Login Using GitHub
           </Button>
         </span>

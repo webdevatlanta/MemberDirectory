@@ -18,7 +18,7 @@ function themedStyles(theme) {
 
 const useStyles = makeStyles(themedStyles);
 
-export default function({cards, config}) {
+export default function({config}) {
   const classes = useStyles();
   const [mode, setMode] = useState({admin:false,game:false});
 
@@ -28,15 +28,15 @@ export default function({cards, config}) {
       <TopAppBar mode={mode} setMode={setMode}/>
       <main>
         {
-          mode.game && <GamePanel cards={cards} />
+          mode.game && <GamePanel config={config} />
         }
 
         {
-          mode.admin && <AdminPanel auth={config.auth} memberlist={config.data.memberlist}/>
+          mode.admin && <AdminPanel config={config}/>
         }
 
         {
-          (!mode.admin && !mode.game) && <HeroPanel cards={cards}/>
+          (!mode.admin && !mode.game) && <HeroPanel config={config}/>
         }
       </main>
 
