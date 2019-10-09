@@ -28,29 +28,31 @@ export default function({config}) {
 
   const [auth, setAuth] = useState({})
   const [members, setMembers] = useState([])
+  const [error, setError] = useState(null)
 
   useEffect(() => {
-    async function applyEffect(config) {
+    async function effect(config) {
       const result = await AuthAPI.getAuthorization(config)
       setAuth(result)
     }
 
-     applyEffect(config.auth);
+     effect(config.auth);
+
   }, [config.auth])
 
   useEffect(() => {
-    async function effect(memberlist) {
-      if (auth.access_token) {
-        AdminAPI.get(memberlist)
-          .then(response => JSON.parse(response.content) )
-          .then(({members}) => setMembers(members) )
-          .catch(err => console.log("Error:", err))
-      } else {
-        setMembers([]);
-      }
+    async function effect(resource) {
+      await AdminAPI.get(resource)
+        .then( (response) => JSON.parse(response.content) )
+        .then( ({members}) => setMembers(members) )
+        .catch( (error) => setError(error) )
     }
 
-    effect(config.data.memberlist)
+    if (auth.access_token) {
+      effect(config.data.memberlist)
+    } else {
+        setMembers([]);
+    }
 
   }, [auth, config.data.memberlist])
 
@@ -62,31 +64,46 @@ export default function({config}) {
 
     const token = auth.access_token;
     const newContents = JSON.stringify({members:newMembers});
+
     AdminAPI.get(config.data.memberlist)
-      .then(({sha}) => AdminAPI.put(config.data.memberlist, token, sha, newContents))
-      .then((result) => setMembers(newMembers))
+      .then( ({sha}) => AdminAPI.put(config.data.memberlist, token, sha, newContents) )
+      .then( (result) => setMembers(newMembers) )
+      .catch( (error) => setError(error) )
   }
 
   const onMemberCreated = (member) => {
     const newMembers = [...members, member];
     const token = auth.access_token;
     const newContents = JSON.stringify({members:newMembers});
+
     AdminAPI.get(config.data.memberlist)
-      .then(({sha}) => AdminAPI.put(config.data.memberlist, token, sha, newContents))
-      .then((result) => setMembers(newMembers))
+      .then( ({sha}) => AdminAPI.put(config.data.memberlist, token, sha, newContents) )
+      .then( (result) => setMembers(newMembers) )
+      .catch( (error) => setError(error) )
   }
 
   const onMemberRemoved = (member) => {
     const newMembers = members.filter( (m) => m !== member );
     const token = auth.access_token;
     const newContents = JSON.stringify({members:newMembers});
+
     AdminAPI.get(config.data.memberlist)
-      .then(({sha}) => AdminAPI.put(config.data.memberlist, token, sha, newContents))
-      .then((result) => setMembers(newMembers))
+      .then( ({sha}) => AdminAPI.put(config.data.memberlist, token, sha, newContents) )
+      .then( (result) => setMembers(newMembers) )
+      .catch( (error) => setError(error) )
   }
 
   return (
     <Container className={classes.grid} maxWidth="md">
+      {
+        error &&
+          <>
+            <hr></hr>
+            <div> An Error Occurred </div>
+            <div> {error.message} </div>
+            <hr></hr>
+          </>
+      }
       { auth.access_token &&
         <Table>
           <TableHead>

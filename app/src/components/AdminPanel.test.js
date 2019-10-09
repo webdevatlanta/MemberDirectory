@@ -25,23 +25,20 @@ function queueMemberlistResponse() {
   fetch.mockResponseOnce(JSON.stringify(mockResponse));
 }
 
-it('renders without crashing', async () => {
-  fetch.resetMocks();
-  queueAuthResponse();
-  queueMemberlistResponse();
-
-
-  const theme = createMuiTheme({
-    palette: {
-      primary: {
-        main: '#7091be',
-      },
-      secondary: {
-        main: '#FFD700',
-      },
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#7091be',
     },
-  });
+    secondary: {
+      main: '#FFD700',
+    },
+  },
+});
 
+it('Shows error message if authentication middleware unreachable.', async () => {
+  fetch.resetMocks();
+  fetch.mockReject( new Error("this is an expected error") );
 
   const div = document.createElement('div');
 
@@ -51,5 +48,25 @@ it('renders without crashing', async () => {
         <AdminPanel config={Config}/>
       </ThemeProvider>, div);
   });
+
+  expect(fetch.mock.calls.length).toEqual(1);
+  expect(div.innerHTML).toMatch(new RegExp("The auth middleware is not reachable. Is it running\?"));
+})
+
+it('Requests authentication, then memberlist.', async () => {
+  fetch.resetMocks();
+
+  queueAuthResponse();
+  queueMemberlistResponse();
+
+  const div = document.createElement('div');
+
+  await act(async () => {
+    ReactDOM.render(
+      <ThemeProvider theme={theme}>
+        <AdminPanel config={Config}/>
+      </ThemeProvider>, div);
+  });
+
   expect(fetch.mock.calls.length).toEqual(2);
 });
