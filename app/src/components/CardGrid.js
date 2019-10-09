@@ -38,13 +38,12 @@ export default function({cards}) {
   return (
     <Container className={classes.cardGrid} maxWidth="md">
 
-      {/* Valid cards are show here */}
       <Grid container spacing={4}>
         {cards
           .filter(card => !card.error)
           .map((card, index) => (
             <Grid item key={card.name} xs={12} sm={6} md={4}>
-              <Card className={classes.card} style={{cursor: 'grab'}}>
+              <Card className={classes.card}>
                 <CardMedia
                   className={classes.cardMedia}
                   image={card.profile.avatar}
@@ -73,25 +72,6 @@ export default function({cards}) {
         ))}
       </Grid>
 
-      {/* Cards with errors are shown here */}
-      <Grid container spacing={4}>
-        {cards
-          .filter(card => !!card.error)
-          .map(card => (
-            <Grid item key={card.name} xs={12} sm={6} md={4}>
-              <Card className={classes.card}>
-                <CardContent className={classes.cardContent}>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {card.name}
-                  </Typography>
-                  <Typography>
-                    <a href={card.gist_url}>{card.error.message}</a>
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-        ))}
-      </Grid>
     </Container>
   )
 }
