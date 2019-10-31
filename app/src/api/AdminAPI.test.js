@@ -58,6 +58,18 @@ it('Makes well formed GET request for memberlist', () => {
   })
 })
 
+it('Makes a well formed GET request for currently logged in user', () => {
+  const expected_url = ``
+
+  const mockResponse = {"login":"the user name", "message":"the failure message" }
+  fetch.mockResponseOnce(JSON.stringify(mockResponse));
+
+  return api.getCurrentUser().then( response => {
+    expect(fetch.mock.calls.length).toEqual(1);
+    expect(response).toEqual(mockResponse);
+  });
+});
+
 it('Makes a well formed PUT request for memberlist', () => {
   fetch.mockResponseOnce(`{"sha":"current-memberlist-sha"}`);
 

@@ -27,6 +27,7 @@ export default function({config}) {
   const classes = useStyles();
 
   const [auth, setAuth] = useState({})
+  const [login, setLogin] = useState("")
   const [members, setMembers] = useState([])
   const [error, setError] = useState(null)
 
@@ -55,6 +56,20 @@ export default function({config}) {
     }
 
   }, [auth, config.data.memberlist])
+
+  useEffect(() => {
+    async function effect(token) {
+      await AdminAPI.getCurrentUser(token)
+        .then( (response) => setLogin(response.login) )
+        .catch( (error) => setError(error) )
+    }
+
+    if (auth.access_token) {
+      effect(auth.access_token);
+    } else {
+      setLogin("");
+    }
+  }, [auth]);
 
 
   const onMemberEdited = (original, edited) => {
@@ -105,6 +120,8 @@ export default function({config}) {
           </>
       }
       { auth.access_token &&
+        <>
+        <span>Logged in as: {login}</span>
         <Table>
           <TableHead>
             <TableRow>
@@ -119,6 +136,7 @@ export default function({config}) {
             <AdminMemberCreator onMemberCreated={onMemberCreated} key={-1}/>
           </TableBody>
         </Table>
+      </>
       }
       { auth.error &&
           <span>
