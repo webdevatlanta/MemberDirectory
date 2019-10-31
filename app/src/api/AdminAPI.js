@@ -26,6 +26,19 @@ export function get(config) {
     .then(({sha, content}) => Object.assign({sha, content:atob(content)}))
 }
 
+export function getCurrentUser(token) {
+  const method = "GET";
+  const agent = "WebDevAtlanta GitHub API Interface/1.0";
+  const url = `https://api.github.com/user`;
+  const headers = buildHeaders(token);
+  const request = new Request(url, {method, headers, agent});
+
+  return fetch(request)
+    .then(response => checkResponse(response))
+    .then(response => response.json())
+    .then(({login, message}) => Object.assign({login, message}))
+}
+
 function buildGithubAPIUrl(config) {
   const {owner, repo, path}  = config
   return `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;

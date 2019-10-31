@@ -12,6 +12,11 @@ function queueAuthResponse() {
   fetch.mockResponseOnce(JSON.stringify(expected));
 }
 
+function queueUserReponse() {
+  const expected = {login:"login-name"}
+  fetch.mockResponseOnce(JSON.stringify(expected));
+}
+
 function queueMemberlistResponse() {
   const expectedContents = {
     members:[]
@@ -53,10 +58,11 @@ it('Shows error message if authentication middleware unreachable.', async () => 
   expect(div.innerHTML).toMatch(new RegExp("The auth middleware is not reachable. Is it running\?"));
 })
 
-it('Requests authentication, then memberlist.', async () => {
+it('Requests authentication, then current user and memberlist.', async () => {
   fetch.resetMocks();
 
   queueAuthResponse();
+  queueUserReponse();
   queueMemberlistResponse();
 
   const div = document.createElement('div');
@@ -68,5 +74,5 @@ it('Requests authentication, then memberlist.', async () => {
       </ThemeProvider>, div);
   });
 
-  expect(fetch.mock.calls.length).toEqual(2);
+  expect(fetch.mock.calls.length).toEqual(3);
 });
