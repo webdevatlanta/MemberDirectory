@@ -1,26 +1,29 @@
-# Admin Server
-Barebones OAuth middleware for localhost. It follows the [Web Flow](https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#web-application-flow) sequence to get an access token. The token is then cached and served to the MemberDirectory app.
+# Admin Middleware Service
+This is a required component for 'admin' functions provided by WebDevAtlanta Membership Directory app. This service is a lightweight, single user interface to the Github OAuth [web flow](https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#web-application-flow). The Member Directory app needs this service in order to acquires a Github API token.
 
-## Client API
-Request ```GET /token``` yields an access token, if available. Otherwise, redirect to the OAuth permissions page (GitHub) and, assuming the user grants permission, cache the resulting token and serve for subsequent ```GET /token``` requests.
+## Using this service
+1) `make test`
+2) `make start`
 
-## Install and Test
-1) Clone this repo
-2) ```make test```
+## But wait...
+The above instructions only work if you've configured the service. The easiest way is to contact one of the admins and get the required configration file. The file lives in admin/secrets, and is not checked into the repository.
 
-## Configure for Use
+## Configuration
+If this is a new installation, for a new organization, then you'll need to create a configuration file.
+1) Create a new OAuth application using https://github.com/settings/developers
+2) When creating the application, configure the callback url as: `http://lvh.me:3001/auth-callback`
+3) Once the OAuth application has been created, create a file named  `admin/secrets/github-oauth.json`, like this:
 
-1) Create a new Oauth application using https://github.com/settings/developers
-2) Set the callback url to: _http://lvh.me:3001/auth-callback_
-3) Copy the *client id* and *secret* into file called ```secrets/github-oauth.json```, like this:
-```
-{
-    "REQUEST_CODE" : "https://github.com/login/oauth/authorize",
-    "REQUEST_TOKEN": "https://github.com/login/oauth/access_token",
-    "CLIENT_ID": "${client-id}",
-    "CLIENT_SECRET": "${secret}",
-    "AUTHORIZATION_GRANTED": "http://localhost:3000",
-}
-```
+    ```
+    {
+        "REQUEST_CODE" : "https://github.com/login/oauth/authorize",
+        "REQUEST_TOKEN": "https://github.com/login/oauth/access_token",
+        "CLIENT_ID": "your-oauth-app-client-id",
+        "CLIENT_SECRET": "your-oath-app-secret",
+        "AUTHORIZATION_GRANTED": "http://localhost:3000",
+    }
+    ```
 
-3) Start the server, ```make start```
+    Note the `CLIENT_ID` and `CLIENT_SECRET` fields. Those can be found in the app configuration.
+
+    Note the `AUTHORIZATION_GRANTED` field. That url should be where the local copy of the Member Directory is served.
