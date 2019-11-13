@@ -17,7 +17,7 @@ Check it out: https://webdevatlanta.github.io/MemberDirectory
 Should you decide you don't want to be listed anymore, simply delete your Gist.
 
 ## Customize your profile
-By default, your Github avatar image is used for your profile. If you prefer a different image, you should use JSON in profile instead of plaintext. Here is an example:
+By default, your Github avatar image is used for your profile. If you prefer a different image, you should use JSON instead of plaintext. Here is an example:
 
 ```
 {
